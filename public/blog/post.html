@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title id="doc-title">Blog — Jethro Kimathi</title>
+<meta name="description" id="doc-desc" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#060a07;--card:#0d1410;--em:#1d7a50;--em-lt:#27a36a;--gold:#c9a227;--text:#e8ede9;--muted:#7a8c7e;--b1:rgba(255,255,255,.10);--b2:rgba(255,255,255,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--em-lt);text-decoration:none}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,10,7,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--b2)}
+.nav-inner{max-width:780px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1rem;color:var(--text);letter-spacing:-.02em}
+.nav-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--em),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;color:#fff;flex-shrink:0}
+.nav-name span{color:var(--em-lt)}
+.nav-back{font-size:.82rem;font-weight:600;color:var(--muted)}
+.nav-back:hover{color:var(--gold);text-decoration:none}
+.cover{width:100%;height:360px;object-fit:cover;display:block}
+.cover-ph{height:200px;background:linear-gradient(135deg,var(--em) 0%,#0a3d22 100%)}
+article{max-width:720px;margin:0 auto;padding:48px 24px 96px}
+.cat-pill{display:inline-block;background:rgba(29,122,80,.15);color:#6ee7b7;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;margin-bottom:16px}
+h1{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px}
+.meta{font-size:.8rem;color:var(--muted);margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--b2)}
+.body h2{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;margin:36px 0 12px}
+.body h3{font-size:1.05rem;font-weight:700;margin:28px 0 8px}
+.body p{margin-bottom:18px;color:#cdd5cf}
+.body ul,.body ol{margin:0 0 18px 24px;color:#cdd5cf}
+.body li{margin-bottom:6px}
+.body blockquote{border-left:3px solid var(--gold);padding:14px 18px;margin:28px 0;font-style:italic;background:var(--card);border-radius:0 10px 10px 0}
+.body img{max-width:100%;border-radius:10px;margin:20px 0}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.85rem;margin-bottom:28px}
+.back:hover{color:var(--gold);text-decoration:none}
+footer{text-align:center;padding:28px;font-size:.76rem;color:var(--muted);border-top:1px solid var(--b2)}
+.not-found{text-align:center;padding:80px 24px;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+  <a class="nav-logo" href="/"><div class="nav-mark">JK</div><div class="nav-name">Jethro <span>Kimathi</span></div></a>
+  <a class="nav-back" href="/blog/">← All Posts</a>
+</div></nav>
+
+<div id="post-root"></div>
+
+<footer>© <span id="yr"></span> Jethro Kimathi &nbsp;·&nbsp; <a href="/">← Home</a></footer>
+
+<script>
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+const slug = new URLSearchParams(location.search).get('slug') || location.pathname.split('/').filter(Boolean).pop();
+
+async function load() {
+  const root = document.getElementById('post-root');
+  try {
+    const posts = await fetch('/posts.json').then(r => r.json());
+    const post  = posts.find(p => p.slug === slug && p.status === 'published');
+    if (!post) {
+      root.innerHTML = '<div class="not-found"><p>Post not found.</p><br><a href="/blog/" style="color:var(--em-lt)">← All Posts</a></div>';
+      return;
+    }
+    document.getElementById('doc-title').textContent  = post.title + ' — Jethro Kimathi';
+    document.getElementById('doc-desc').content = post.excerpt || post.title;
+    const date = new Date(post.publishedAt).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+    root.innerHTML = `
+      ${post.coverImage ? `<img class="cover" src="${esc(post.coverImage)}" alt="${esc(post.title)}">` : '<div class="cover-ph"></div>'}
+      <article>
+        <a class="back" href="/blog/">← Back to blog</a>
+        <span class="cat-pill">${esc(post.category)}</span>
+        <h1>${esc(post.title)}</h1>
+        <div class="meta">${date} · Jethro Kimathi</div>
+        <div class="body">${post.body}</div>
+      </article>`;
+  } catch(_) {
+    root.innerHTML = '<div class="not-found">Could not load post.</div>';
+  }
+}
+document.getElementById('yr').textContent = new Date().getFullYear();
+load();
+</script>
+</body>
+</html>

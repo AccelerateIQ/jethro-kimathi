@@ -1,0 +1,16 @@
+{
+  "name": "jethro-kimathi",
+  "version": "1.0.0",
+  "description": "Jethro Kimathi personal brand — Ministry · Entrepreneurship · Agribusiness",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "fetch-photos": "node scripts/fetch-photos.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

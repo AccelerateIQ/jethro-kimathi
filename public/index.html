@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jethro Kimathi — Minister · Entrepreneur · Farmer</title>
+<meta name="description" content="Jethro Kimathi — committed to building Kingdom impact through faith, sustainable agribusiness, and purposeful entrepreneurship in Kenya and beyond.">
+<meta property="og:title" content="Jethro Kimathi — Minister · Entrepreneur · Farmer">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Variables ─────────────────────────────────────────────────────────── */
+:root {
+  --ink:    #060a07;
+  --card:   #0d1410;
+  --card2:  #121a14;
+  --em:     #1d7a50;   /* emerald — growth, land, life */
+  --em-lt:  #27a36a;
+  --gold:   #c9a227;   /* gold — authority, ministry */
+  --gold-lt:#e0b83a;
+  --text:   #e8ede9;
+  --muted:  #7a8c7e;
+  --b1:     rgba(255,255,255,.10);
+  --b2:     rgba(255,255,255,.06);
+}
+*  { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--text); font-family: 'Inter', sans-serif;
+       font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: var(--em-lt); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { display: block; max-width: 100%; }
+
+/* ── Nav ───────────────────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(6,10,7,.93); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--b2);
+}
+.nav-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 28px;
+  display: flex; align-items: center; justify-content: space-between; height: 64px;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-mark {
+  width: 34px; height: 34px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--em) 0%, var(--gold) 100%);
+  border-radius: 9px; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 900; color: #fff;
+}
+.nav-name { font-weight: 800; font-size: 1rem; color: var(--text); letter-spacing: -.02em; }
+.nav-name span { color: var(--em-lt); }
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-links a {
+  font-size: .83rem; font-weight: 600; color: var(--muted); padding: 6px 12px;
+  border-radius: 7px; transition: .15s;
+}
+.nav-links a:hover { color: var(--text); background: var(--b2); text-decoration: none; }
+.nav-cta {
+  background: var(--em); color: #fff !important; padding: 8px 16px !important;
+  border-radius: 8px; transition: background .15s !important;
+}
+.nav-cta:hover { background: var(--em-lt) !important; }
+.nav-mobile-toggle {
+  display: none; background: none; border: 1px solid var(--b1); color: var(--muted);
+  padding: 7px 11px; border-radius: 7px; cursor: pointer; font-size: .85rem;
+}
+@media (max-width: 700px) {
+  .nav-links { display: none; }
+  .nav-mobile-toggle { display: block; }
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--ink);
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('/assets/photos/jethro-2-web.jpg');
+  background-size: cover; background-position: center top;
+  background-repeat: no-repeat;
+  filter: brightness(.38) saturate(.8);
+  transition: opacity .5s;
+}
+/* Fallback gradient if photo not loaded */
+.hero-bg-fallback {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #071a10 0%, #0a2415 40%, #050e07 100%);
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(6,10,7,0) 40%, rgba(6,10,7,.85) 100%);
+}
+.hero-content {
+  position: relative; max-width: 760px; margin: 0 auto;
+  padding: 160px 28px 100px;
+}
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(29,122,80,.18); border: 1px solid rgba(29,122,80,.35);
+  color: #6ee7b7; border-radius: 20px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 14px; margin-bottom: 24px;
+}
+.hero-pill::before { content: '✦'; font-size: .7rem; }
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 900;
+  letter-spacing: -.05em; line-height: 1;
+  color: var(--text); margin-bottom: 8px;
+}
+.hero h1 span { color: var(--em-lt); }
+.hero-titles {
+  font-size: clamp(.95rem, 2.5vw, 1.15rem); font-weight: 500;
+  color: var(--muted); letter-spacing: .12em; text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-tagline {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 500;
+  color: #b8d4bc; max-width: 540px; line-height: 1.55;
+  margin-bottom: 40px;
+}
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--em); color: #fff; font-weight: 700; font-size: .95rem;
+  padding: 14px 28px; border-radius: 10px; border: none; cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.btn-primary:hover { background: var(--em-lt); transform: translateY(-1px); text-decoration: none; }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--text); font-weight: 700; font-size: .95rem;
+  padding: 14px 28px; border-radius: 10px;
+  border: 1px solid var(--b1); transition: .15s;
+}
+.btn-outline:hover { background: var(--b2); text-decoration: none; }
+.hero-stats {
+  position: absolute; bottom: 40px; left: 28px; right: 28px;
+  display: flex; gap: 32px; flex-wrap: wrap; max-width: 760px; margin: 0 auto;
+}
+.hero-stat { }
+.hero-stat-val { font-size: 1.5rem; font-weight: 800; color: var(--gold); letter-spacing: -.03em; }
+.hero-stat-lbl { font-size: .72rem; color: var(--muted); font-weight: 500; letter-spacing: .04em; }
+@media (max-width: 600px) { .hero-content { padding: 120px 20px 80px; } .hero-stats { bottom: 28px; left: 20px; gap: 20px; } }
+
+/* ── Section shared ────────────────────────────────────────────────────── */
+.section { max-width: 1100px; margin: 0 auto; padding: 88px 28px; }
+.section-sm { max-width: 1100px; margin: 0 auto; padding: 64px 28px; }
+.eyebrow {
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--em-lt); margin-bottom: 12px;
+}
+.eyebrow-gold { color: var(--gold); }
+h2.section-h2 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800;
+  letter-spacing: -.04em; line-height: 1.15; margin-bottom: 16px;
+}
+.section-lead {
+  font-size: 1.05rem; color: var(--muted); max-width: 560px; line-height: 1.7;
+  margin-bottom: 40px;
+}
+.divider { border: none; border-top: 1px solid var(--b2); margin: 0; }
+
+/* ── About ─────────────────────────────────────────────────────────────── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+}
+.about-photo-wrap {
+  position: relative; border-radius: 20px; overflow: hidden;
+  aspect-ratio: 4/5; background: var(--card);
+}
+.about-photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.about-photo-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, var(--card2) 0%, #0a2010 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; color: var(--muted);
+}
+.about-badge {
+  position: absolute; bottom: 20px; left: 20px;
+  background: rgba(6,10,7,.88); backdrop-filter: blur(10px);
+  border: 1px solid var(--b1); border-radius: 12px;
+  padding: 12px 16px;
+}
+.about-badge strong { display: block; font-size: .92rem; font-weight: 700; color: var(--text); }
+.about-badge span { font-size: .72rem; color: var(--muted); }
+.about-pillars { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+.pillar {
+  background: var(--card); border: 1px solid var(--b2); border-radius: 10px;
+  padding: 10px 16px; font-size: .82rem; font-weight: 600; color: var(--text);
+}
+.pillar-icon { margin-right: 5px; }
+@media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+/* ── Ministry ──────────────────────────────────────────────────────────── */
+.ministry-wrap {
+  background: var(--card2);
+  border-top: 1px solid var(--b2); border-bottom: 1px solid var(--b2);
+}
+.ministry-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+}
+.ministry-img {
+  border-radius: 16px; overflow: hidden; aspect-ratio: 16/10;
+  background: var(--card);
+}
+.ministry-img img { width: 100%; height: 100%; object-fit: cover; }
+.ministry-img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #0a2415 0%, #1a1200 100%);
+  display: flex; align-items: center; justify-content: center; font-size: 3rem;
+}
+.ministry-cards { display: grid; gap: 12px; margin-top: 28px; }
+.ministry-card {
+  background: var(--ink); border: 1px solid var(--b2); border-radius: 12px;
+  padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start;
+}
+.ministry-card-icon {
+  width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+  background: rgba(201,162,39,.12); border: 1px solid rgba(201,162,39,.2);
+  display: flex; align-items: center; justify-content: center; font-size: 1rem;
+}
+.ministry-card h3 { font-size: .92rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.ministry-card p  { font-size: .83rem; color: var(--muted); margin: 0; }
+@media (max-width: 768px) { .ministry-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+/* ── Agribusiness ──────────────────────────────────────────────────────── */
+.agri-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 12px; }
+.agri-card {
+  background: var(--card); border: 1px solid var(--b2); border-radius: 16px;
+  overflow: hidden;
+}
+.agri-card-img {
+  aspect-ratio: 16/9; overflow: hidden;
+  background: linear-gradient(135deg, #0a2415 0%, #051a0c 100%);
+}
+.agri-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.agri-card:hover .agri-card-img img { transform: scale(1.04); }
+.agri-card-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center; font-size: 2rem;
+}
+.agri-card-body { padding: 20px 22px 24px; }
+.agri-card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+.agri-card-body p  { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+@media (max-width: 900px) { .agri-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .agri-cards { grid-template-columns: 1fr; } }
+
+/* ── Blog preview ──────────────────────────────────────────────────────── */
+.blog-wrap { background: var(--card2); border-top: 1px solid var(--b2); border-bottom: 1px solid var(--b2); }
+.blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.blog-card {
+  background: var(--ink); border: 1px solid var(--b2); border-radius: 16px;
+  overflow: hidden; display: flex; flex-direction: column;
+  transition: border-color .15s;
+}
+.blog-card:hover { border-color: var(--b1); text-decoration: none; }
+.blog-card-img { aspect-ratio: 16/9; overflow: hidden; background: var(--card); }
+.blog-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.blog-card:hover .blog-card-img img { transform: scale(1.04); }
+.blog-card-img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #0a2415 0%, #0d1a12 100%);
+  display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--muted);
+}
+.blog-card-body { padding: 18px 20px 22px; flex: 1; display: flex; flex-direction: column; }
+.blog-card-cat {
+  font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: #6ee7b7; margin-bottom: 8px;
+}
+.blog-card-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.35; }
+.blog-card-excerpt { font-size: .84rem; color: var(--muted); line-height: 1.6; flex: 1; }
+.blog-card-date { font-size: .73rem; color: var(--muted); margin-top: 14px; }
+.blog-empty { color: var(--muted); font-size: .9rem; padding: 28px 0; }
+.blog-view-all { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: .9rem; color: var(--em-lt); margin-top: 32px; }
+.blog-view-all:hover { text-decoration: underline; }
+@media (max-width: 900px) { .blog-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .blog-grid { grid-template-columns: 1fr; } }
+
+/* ── Contact / Book ────────────────────────────────────────────────────── */
+.contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: start; }
+.contact-intro h2 { margin-bottom: 16px; }
+.contact-detail {
+  display: flex; gap: 12px; align-items: flex-start; margin-top: 28px; padding-top: 28px;
+  border-top: 1px solid var(--b2);
+}
+.contact-detail-icon {
+  width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+  background: rgba(29,122,80,.15); border: 1px solid rgba(29,122,80,.2);
+  display: flex; align-items: center; justify-content: center; font-size: 1rem;
+}
+.contact-detail-text strong { display: block; font-size: .9rem; font-weight: 700; color: var(--text); }
+.contact-detail-text span { font-size: .82rem; color: var(--muted); }
+.form-card {
+  background: var(--card); border: 1px solid var(--b2); border-radius: 20px;
+  padding: 32px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group label { font-size: .78rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.form-group input, .form-group textarea, .form-group select {
+  background: var(--ink); border: 1px solid var(--b1); border-radius: 9px;
+  color: var(--text); font-family: inherit; font-size: .93rem;
+  padding: 11px 14px; outline: none; transition: border-color .15s; width: 100%;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  border-color: var(--em);
+}
+.form-group select option { background: var(--card); }
+.form-group textarea { resize: vertical; min-height: 110px; }
+.form-submit {
+  width: 100%; padding: 14px; background: var(--em); color: #fff;
+  border: none; border-radius: 10px; font-family: inherit; font-size: .95rem;
+  font-weight: 700; cursor: pointer; transition: background .15s;
+}
+.form-submit:hover { background: var(--em-lt); }
+.form-msg { font-size: .85rem; margin-top: 10px; display: none; }
+.form-msg.ok  { color: #6ee7b7; display: block; }
+.form-msg.err { color: #fca5a5; display: block; }
+@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 40px; } .form-row { grid-template-columns: 1fr; } }
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+footer {
+  background: var(--card2); border-top: 1px solid var(--b2);
+  padding: 56px 28px 36px;
+}
+.footer-inner { max-width: 1100px; margin: 0 auto; }
+.footer-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 40px; flex-wrap: wrap; margin-bottom: 40px; padding-bottom: 36px;
+  border-bottom: 1px solid var(--b2);
+}
+.footer-brand .nav-name { font-size: 1.15rem; margin-bottom: 6px; display: block; }
+.footer-brand p { font-size: .85rem; color: var(--muted); max-width: 280px; line-height: 1.6; }
+.footer-links { }
+.footer-links h4 { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a { font-size: .88rem; color: var(--muted); font-weight: 500; }
+.footer-links a:hover { color: var(--text); text-decoration: none; }
+.footer-social { display: flex; gap: 10px; margin-top: 20px; }
+.social-btn {
+  width: 38px; height: 38px; border-radius: 9px;
+  background: var(--ink); border: 1px solid var(--b2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .95rem; text-decoration: none; transition: .15s;
+}
+.social-btn:hover { border-color: var(--b1); transform: translateY(-2px); text-decoration: none; }
+.footer-bottom { font-size: .75rem; color: var(--muted); text-align: center; }
+.footer-credit { color: var(--muted); }
+.footer-credit a { color: var(--em-lt); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">
+      <div class="nav-mark">JK</div>
+      <div class="nav-name">Jethro <span>Kimathi</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#ministry">Ministry</a>
+      <a href="#agribusiness">Agribusiness</a>
+      <a href="#blog">Blog</a>
+      <a href="#book" class="nav-cta">Book for Speaking</a>
+    </div>
+    <button class="nav-mobile-toggle" onclick="this.nextElementSibling&&(this.nextElementSibling.style.display==='flex'?this.nextElementSibling.style.display='none':this.nextElementSibling.style.display='flex')">☰ Menu</button>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-bg-fallback"></div>
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-pill">Minister · Entrepreneur · Farmer</div>
+    <h1>Jethro<br><span>Kimathi</span></h1>
+    <div class="hero-titles">Faith &nbsp;·&nbsp; Land &nbsp;·&nbsp; Leadership</div>
+    <p class="hero-tagline">
+      Committed to building Kingdom impact through faith, sustainable agribusiness,
+      and purposeful entrepreneurship.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#book">Invite for Speaking →</a>
+      <a class="btn-outline" href="#blog">Read the Blog</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── ABOUT ─────────────────────────────────────────────────────────────── -->
+<div id="about">
+<div class="section">
+  <div class="about-grid">
+    <div>
+      <div class="eyebrow">About Jethro</div>
+      <h2 class="section-h2">A Man of Faith,<br>Land &amp; Purpose</h2>
+      <p style="color:#b8d4bc;margin-bottom:18px">
+        Jethro Kimathi is a minister, entrepreneur, and agribusiness practitioner based in Kenya.
+        His life's work sits at the intersection of spiritual leadership, sustainable farming,
+        and business development — driven by the conviction that faith must produce fruit
+        in every dimension of life.
+      </p>
+      <p style="color:var(--muted);font-size:.92rem;margin-bottom:18px">
+        Through preaching, teaching, and community engagement, Jethro builds up individuals
+        and congregations across Kenya and beyond. In the field, he demonstrates that modern
+        agribusiness and Kingdom values are not in conflict — they are partners.
+      </p>
+      <p style="color:var(--muted);font-size:.92rem">
+        His vision: a generation of Africans who are spiritually grounded, economically
+        empowered, and deeply rooted in the land God has given them.
+      </p>
+      <div class="about-pillars">
+        <div class="pillar"><span class="pillar-icon">✝</span> Ministry &amp; Teaching</div>
+        <div class="pillar"><span class="pillar-icon">🌱</span> Agribusiness</div>
+        <div class="pillar"><span class="pillar-icon">📈</span> Entrepreneurship</div>
+        <div class="pillar"><span class="pillar-icon">🇰🇪</span> Kenya &amp; Beyond</div>
+      </div>
+    </div>
+    <div class="about-photo-wrap">
+      <img src="/assets/photos/jethro-portrait-web.jpg" alt="Jethro Kimathi" id="about-photo-container" style="width:100%;height:100%;object-fit:cover;object-position:center top">
+      <div class="about-badge">
+        <strong>Jethro Kimathi</strong>
+        <span>Minister · Entrepreneur · Farmer · Kenya</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- ── MINISTRY ──────────────────────────────────────────────────────────── -->
+<div class="ministry-wrap" id="ministry">
+<div class="section">
+  <div class="ministry-grid">
+    <div>
+      <div class="eyebrow eyebrow-gold">Ministry</div>
+      <h2 class="section-h2">Teaching the Word.<br>Building the Kingdom.</h2>
+      <p class="section-lead">
+        Jethro ministers across Kenya and the region — preaching, teaching, and discipling
+        leaders who carry Kingdom values into every sphere of life.
+      </p>
+      <div class="ministry-cards">
+        <div class="ministry-card">
+          <div class="ministry-card-icon">🎤</div>
+          <div>
+            <h3>Speaking &amp; Preaching</h3>
+            <p>Available for church services, conferences, youth events, and leadership seminars.</p>
+          </div>
+        </div>
+        <div class="ministry-card">
+          <div class="ministry-card-icon">📖</div>
+          <div>
+            <h3>Teachings &amp; Sermons</h3>
+            <p>Practical biblical teaching that connects scripture to everyday life, business, and agriculture.</p>
+          </div>
+        </div>
+        <div class="ministry-card">
+          <div class="ministry-card-icon">🤝</div>
+          <div>
+            <h3>Mentorship &amp; Discipleship</h3>
+            <p>Investing in the next generation of Kingdom-minded leaders, entrepreneurs, and farmers.</p>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:28px">
+        <a class="btn-primary" href="#book">Invite Jethro to Speak →</a>
+      </div>
+    </div>
+    <div class="ministry-img">
+      <div class="ministry-img-placeholder" id="ministry-photo">
+        <span>✝</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- ── AGRIBUSINESS ───────────────────────────────────────────────────────── -->
+<div id="agribusiness">
+<div class="section">
+  <div style="text-align:center;max-width:600px;margin:0 auto 48px">
+    <div class="eyebrow">Agribusiness</div>
+    <h2 class="section-h2">Growing with Purpose</h2>
+    <p class="section-lead" style="margin-left:auto;margin-right:auto">
+      The land is a platform for Kingdom demonstration. Jethro practices and promotes
+      sustainable agribusiness as a pathway to economic independence and community transformation.
+    </p>
+  </div>
+  <div class="agri-cards">
+    <div class="agri-card">
+      <div class="agri-card-img">
+        <div class="agri-card-img-placeholder" id="agri-1-photo">🌾</div>
+      </div>
+      <div class="agri-card-body">
+        <h3>Crop Farming</h3>
+        <p>Cultivating food and cash crops using modern, sustainable practices that respect the land and ensure long-term productivity.</p>
+      </div>
+    </div>
+    <div class="agri-card">
+      <div class="agri-card-img">
+        <div class="agri-card-img-placeholder" id="agri-2-photo">🐄</div>
+      </div>
+      <div class="agri-card-body">
+        <h3>Livestock &amp; Mixed Farming</h3>
+        <p>Integrated farming systems that combine livestock and crops for resilient, diversified production and year-round income.</p>
+      </div>
+    </div>
+    <div class="agri-card">
+      <div class="agri-card-img">
+        <div class="agri-card-img-placeholder" id="agri-3-photo">💡</div>
+      </div>
+      <div class="agri-card-body">
+        <h3>Agribusiness Training</h3>
+        <p>Equipping young people and communities with practical skills, business models, and entrepreneurial mindsets for agricultural success.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── BLOG PREVIEW ───────────────────────────────────────────────────────── -->
+<div class="blog-wrap" id="blog">
+<div class="section">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px">
+    <div>
+      <div class="eyebrow">Blog</div>
+      <h2 class="section-h2" style="margin-bottom:0">Thoughts on Faith,<br>Farming &amp; Business</h2>
+    </div>
+    <a class="blog-view-all" href="/blog/">View all posts →</a>
+  </div>
+  <div class="blog-grid" id="blog-grid">
+    <div class="blog-empty">Loading latest posts…</div>
+  </div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- ── CONTACT / BOOK ─────────────────────────────────────────────────────── -->
+<div id="book">
+<div class="section">
+  <div class="contact-grid">
+    <div class="contact-intro">
+      <div class="eyebrow">Invite Jethro</div>
+      <h2 class="section-h2">Book for Your Event</h2>
+      <p class="section-lead">
+        Looking for a speaker who can bridge faith, farming, and enterprise?
+        Fill in the form and Jethro will get back to you within 48 hours.
+      </p>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📧</div>
+        <div class="contact-detail-text">
+          <strong>Email</strong>
+          <span id="contact-email-display">jkimathi0299@stu.kemu.ac.ke</span>
+        </div>
+      </div>
+      <div class="contact-detail" id="whatsapp-contact" style="display:none">
+        <div class="contact-detail-icon">💬</div>
+        <div class="contact-detail-text">
+          <strong>WhatsApp</strong>
+          <span id="whatsapp-number-display"></span>
+        </div>
+      </div>
+      <div class="contact-detail" id="social-links-block" style="margin-top:28px;padding-top:28px;border-top:1px solid var(--b2);display:block">
+        <div class="footer-social" id="hero-socials">
+          <!-- Dynamically populated from settings -->
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="form-card">
+        <form id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name *</label>
+              <input type="text" name="name" required placeholder="Jane Doe">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="jane@example.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone / WhatsApp</label>
+              <input type="tel" name="phone" placeholder="+254 712 345 678">
+            </div>
+            <div class="form-group">
+              <label>Event Type</label>
+              <select name="eventType">
+                <option value="">— Select —</option>
+                <option>Church Service</option>
+                <option>Conference / Summit</option>
+                <option>Youth Event</option>
+                <option>Agribusiness Training</option>
+                <option>Leadership Seminar</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Event Date</label>
+              <input type="date" name="eventDate">
+            </div>
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <div></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Message *</label>
+            <textarea name="message" required placeholder="Tell Jethro about your event, audience, location, and what you'd like him to speak on…"></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="form-submit-btn">Send Invitation →</button>
+          <div class="form-msg" id="form-msg"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="nav-name">Jethro <span style="color:var(--em-lt)">Kimathi</span></span>
+        <p>Faith · Land · Leadership — building Kingdom impact through ministry, agribusiness, and entrepreneurship.</p>
+        <div class="footer-social" id="footer-social-links">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#ministry">Ministry</a></li>
+          <li><a href="#agribusiness">Agribusiness</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="#book">Book for Speaking</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Blog Topics</h4>
+        <ul>
+          <li><a href="/blog/?category=Ministry">Ministry &amp; Faith</a></li>
+          <li><a href="/blog/?category=Agribusiness">Agribusiness</a></li>
+          <li><a href="/blog/?category=Entrepreneurship">Entrepreneurship</a></li>
+          <li><a href="/blog/?category=Personal">Personal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="footer-year"></span> Jethro Kimathi &nbsp;·&nbsp; All rights reserved</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Load blog posts ─────────────────────────────────────────────────────────
+async function loadBlogPosts() {
+  try {
+    const res = await fetch('/posts.json');
+    const raw = await res.json();
+    const posts = raw.filter(p => p.status === 'published');
+    const grid = document.getElementById('blog-grid');
+    if (!posts || posts.length === 0) {
+      grid.innerHTML = '<p class="blog-empty">New posts coming soon. <a href="/blog/">Check back shortly.</a></p>';
+      return;
+    }
+    grid.innerHTML = posts.slice(0, 3).map(post => {
+      const date = new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      const img = post.coverImage
+        ? `<img src="${esc(post.coverImage)}" alt="${esc(post.title)}" loading="lazy">`
+        : `<div class="blog-card-img-placeholder">✍</div>`;
+      return `<a class="blog-card" href="/blog/post.html?slug=${esc(post.slug)}">
+        <div class="blog-card-img">${img}</div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">${esc(post.category)}</div>
+          <div class="blog-card-title">${esc(post.title)}</div>
+          ${post.excerpt ? `<div class="blog-card-excerpt">${esc(post.excerpt)}</div>` : ''}
+          <div class="blog-card-date">${date}</div>
+        </div>
+      </a>`;
+    }).join('');
+  } catch (e) {
+    document.getElementById('blog-grid').innerHTML = '<p class="blog-empty">Posts unavailable right now.</p>';
+  }
+}
+
+// ── Load settings (WhatsApp, social links) ──────────────────────────────────
+async function loadSettings() {
+  try {
+    const res = await fetch('/settings.json').catch(() => null);
+    if (!res || !res.ok) return;
+    const sett = await res.json();
+    // WhatsApp
+    if (sett.whatsapp) {
+      const num = sett.whatsapp.replace(/\D/g, '');
+      document.getElementById('whatsapp-contact').style.display = 'flex';
+      document.getElementById('whatsapp-number-display').textContent = sett.whatsapp;
+    }
+    // Email override
+    if (sett.email) document.getElementById('contact-email-display').textContent = sett.email;
+    // Social links
+    const socials = [];
+    if (sett.facebook)    socials.push({ url: sett.facebook,    icon: 'f', label: 'Facebook' });
+    if (sett.instagram)   socials.push({ url: sett.instagram,   icon: '📷', label: 'Instagram' });
+    if (sett.youtube)     socials.push({ url: sett.youtube,     icon: '▶', label: 'YouTube' });
+    if (sett.linkedin)    socials.push({ url: sett.linkedin,    icon: 'in', label: 'LinkedIn' });
+    if (sett.twitter)     socials.push({ url: sett.twitter,     icon: '𝕏', label: 'X / Twitter' });
+    const socialHtml = socials.map(s =>
+      `<a class="social-btn" href="${esc(s.url)}" target="_blank" rel="noopener" title="${esc(s.label)}">${s.icon}</a>`
+    ).join('');
+    ['footer-social-links', 'hero-socials'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = socialHtml;
+    });
+    // Hero photo
+    if (sett.heroPhoto) {
+      const bg = document.getElementById('hero-bg');
+      if (bg) bg.style.backgroundImage = `url('${esc(sett.heroPhoto)}')`;
+    }
+    // About photo override from settings
+    if (sett.aboutPhoto) {
+      const el = document.getElementById('about-photo-container');
+      if (el) { el.src = sett.aboutPhoto; }
+    }
+    // Ministry photo
+    if (sett.ministryPhoto) {
+      const el = document.getElementById('ministry-photo');
+      if (el) el.innerHTML = `<img src="${esc(sett.ministryPhoto)}" alt="Ministry" style="width:100%;height:100%;object-fit:cover">`;
+    }
+    // Agri photos
+    ['agri-1-photo','agri-2-photo','agri-3-photo'].forEach((id, i) => {
+      const photoKey = `agriPhoto${i+1}`;
+      if (sett[photoKey]) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = `<img src="${esc(sett[photoKey])}" alt="Agribusiness" style="width:100%;height:100%;object-fit:cover">`;
+      }
+    });
+  } catch (_) {}
+}
+
+// ── Contact form → mailto ────────────────────────────────────────────────────
+document.getElementById('contact-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  const body = [
+    `From: ${d.name}`,
+    d.phone    ? `Phone: ${d.phone}` : '',
+    d.eventType? `Event type: ${d.eventType}` : '',
+    d.eventDate? `Date: ${d.eventDate}` : '',
+    '',
+    d.message,
+  ].filter(l => l !== undefined).join('\n');
+  const to = document.getElementById('contact-email-display').textContent || 'jkimathi0299@stu.kemu.ac.ke';
+  window.location.href = `mailto:${to}?subject=${encodeURIComponent('Speaking Invitation — ' + d.name)}&body=${encodeURIComponent(body)}`;
+});
+
+// ── Try to load local stock photos (from fetch-photos.js manifest) ──────────
+async function loadPhotos() {
+  try {
+    const res = await fetch('/assets/photos/manifest.json');
+    if (!res.ok) return;
+    const manifest = await res.json();
+    if (manifest.hero) {
+      const bg = document.getElementById('hero-bg');
+      if (bg) bg.style.backgroundImage = `url('${manifest.hero}')`;
+    }
+    if (manifest['ministry-1']) {
+      const el = document.getElementById('ministry-photo');
+      if (el) el.innerHTML = `<img src="${manifest['ministry-1']}" alt="Ministry" style="width:100%;height:100%;object-fit:cover">`;
+    }
+    ['agri-1','agri-2','agri-3'].forEach((key, i) => {
+      if (manifest[key]) {
+        const el = document.getElementById(`agri-${i+1}-photo`);
+        if (el) el.innerHTML = `<img src="${manifest[key]}" alt="Agribusiness" style="width:100%;height:100%;object-fit:cover">`;
+      }
+    });
+  } catch (_) {}
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+loadPhotos();
+loadSettings();
+loadBlogPosts();
+</script>
+</body>
+</html>

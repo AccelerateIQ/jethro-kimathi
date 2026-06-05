@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blog — Jethro Kimathi</title>
+<meta name="description" content="Thoughts on faith, agribusiness, and entrepreneurship from Jethro Kimathi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#060a07;--card:#0d1410;--em:#1d7a50;--em-lt:#27a36a;--gold:#c9a227;--text:#e8ede9;--muted:#7a8c7e;--b1:rgba(255,255,255,.10);--b2:rgba(255,255,255,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--em-lt);text-decoration:none}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,10,7,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--b2)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1rem;color:var(--text);letter-spacing:-.02em}
+.nav-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--em),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;color:#fff;flex-shrink:0}
+.nav-name span{color:var(--em-lt)}
+.nav-back{font-size:.82rem;font-weight:600;color:var(--muted)}
+.nav-back:hover{color:var(--gold);text-decoration:none}
+main{max-width:1100px;margin:0 auto;padding:56px 28px 88px}
+.page-header{margin-bottom:48px}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--em-lt);margin-bottom:10px}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.04em;margin-bottom:12px}
+.lead{font-size:1rem;color:var(--muted);max-width:500px}
+.cats{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+.cat-btn{padding:7px 16px;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--b2);background:transparent;color:var(--muted);font-family:inherit;transition:.15s}
+.cat-btn.active,.cat-btn:hover{background:var(--em);border-color:var(--em);color:#fff}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:12px}
+.blog-card{background:var(--card);border:1px solid var(--b2);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s}
+.blog-card:hover{border-color:var(--b1);text-decoration:none}
+.blog-card-img{aspect-ratio:16/9;overflow:hidden;background:linear-gradient(135deg,#0a2415,#0d1a12)}
+.blog-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.blog-card:hover .blog-card-img img{transform:scale(1.04)}
+.blog-card-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:var(--muted)}
+.blog-card-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column}
+.blog-card-cat{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6ee7b7;margin-bottom:8px}
+.blog-card-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.35}
+.blog-card-excerpt{font-size:.84rem;color:var(--muted);line-height:1.6;flex:1}
+.blog-card-date{font-size:.72rem;color:var(--muted);margin-top:12px}
+.empty{text-align:center;padding:64px 20px;color:var(--muted);font-size:.9rem}
+.empty a{color:var(--em-lt)}
+footer{text-align:center;padding:28px;font-size:.76rem;color:var(--muted);border-top:1px solid var(--b2)}
+@media(max-width:900px){.blog-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.blog-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+  <a class="nav-logo" href="/">
+    <div class="nav-mark">JK</div>
+    <div class="nav-name">Jethro <span>Kimathi</span></div>
+  </a>
+  <a class="nav-back" href="/">← Home</a>
+</div></nav>
+
+<main>
+  <div class="page-header">
+    <div class="eyebrow">Blog</div>
+    <h1>Thoughts on Faith,<br>Farming &amp; Business</h1>
+    <p class="lead">Reflections on ministry, sustainable agribusiness, and entrepreneurship from the ground up.</p>
+    <div class="cats" id="cat-filters">
+      <button class="cat-btn active" data-cat="">All Posts</button>
+      <button class="cat-btn" data-cat="Ministry">Ministry</button>
+      <button class="cat-btn" data-cat="Agribusiness">Agribusiness</button>
+      <button class="cat-btn" data-cat="Entrepreneurship">Entrepreneurship</button>
+      <button class="cat-btn" data-cat="Personal">Personal</button>
+    </div>
+  </div>
+  <div class="blog-grid" id="blog-grid">
+    <div class="empty" style="grid-column:1/-1">Loading posts…</div>
+  </div>
+</main>
+
+<footer>© <span id="yr"></span> Jethro Kimathi &nbsp;·&nbsp; <a href="/">← Back to home</a></footer>
+
+<script>
+let allPosts = [];
+let activeCat = '';
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function renderPosts(posts) {
+  const grid = document.getElementById('blog-grid');
+  if (!posts.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1">No posts yet. <a href="/">← Back to home</a></div>';
+    return;
+  }
+  grid.innerHTML = posts.map(p => {
+    const date = new Date(p.publishedAt).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+    const img = p.coverImage
+      ? `<img src="${esc(p.coverImage)}" alt="${esc(p.title)}" loading="lazy">`
+      : `<div class="blog-card-img-ph">✍</div>`;
+    return `<a class="blog-card" href="/blog/post.html?slug=${esc(p.slug)}">
+      <div class="blog-card-img">${img}</div>
+      <div class="blog-card-body">
+        <div class="blog-card-cat">${esc(p.category)}</div>
+        <div class="blog-card-title">${esc(p.title)}</div>
+        ${p.excerpt ? `<div class="blog-card-excerpt">${esc(p.excerpt)}</div>` : ''}
+        <div class="blog-card-date">${date}</div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+async function loadPosts() {
+  try {
+    const res = await fetch('/posts.json');
+    const raw = await res.json();
+    let posts = raw.filter(p => p.status === 'published');
+    if (activeCat) posts = posts.filter(p => p.category === activeCat);
+    allPosts = posts;
+    renderPosts(allPosts);
+  } catch(_) {
+    document.getElementById('blog-grid').innerHTML = '<div class="empty" style="grid-column:1/-1">Could not load posts.</div>';
+  }
+}
+
+document.getElementById('cat-filters').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-btn');
+  if (!btn) return;
+  activeCat = btn.dataset.cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadPosts();
+});
+
+// Pre-filter by URL param e.g. ?category=Ministry
+const urlCat = new URLSearchParams(location.search).get('category') || '';
+if (urlCat) {
+  activeCat = urlCat;
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === urlCat);
+  });
+}
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+loadPosts();
+</script>
+</body>
+</html>

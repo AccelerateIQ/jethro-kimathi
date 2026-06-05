@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Jethro Kimathi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#060a07;--card:#0d1410;--card2:#121a14;--em:#1d7a50;--em-lt:#27a36a;--gold:#c9a227;--text:#e8ede9;--muted:#7a8c7e;--b1:rgba(255,255,255,.10);--b2:rgba(255,255,255,.06);--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;flex-direction:column}
+.screen.active{display:flex}
+.card{background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:36px;width:100%;max-width:400px}
+.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.mark{width:34px;height:34px;background:linear-gradient(135deg,var(--em),var(--gold));border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.95rem;flex-shrink:0}
+.logo-text{font-weight:800;font-size:1rem}
+.logo-text small{display:block;font-size:.7rem;font-weight:400;color:var(--muted)}
+.app{display:none;min-height:100vh;flex-direction:column}
+.app.active{display:flex}
+.topbar{background:var(--card2);border-bottom:1px solid var(--b2);padding:0 22px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-left{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.92rem}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.body{display:flex;flex:1;min-height:0}
+.sidebar{width:190px;flex-shrink:0;background:var(--card2);border-right:1px solid var(--b2);padding:12px 0}
+.nav-section{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 16px 3px;margin-top:6px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:9px 16px;font-size:.84rem;font-weight:600;color:var(--muted);cursor:pointer;border-left:3px solid transparent;transition:.12s}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-item.active{color:var(--text);background:rgba(29,122,80,.12);border-left-color:var(--em)}
+.content{flex:1;overflow-y:auto;padding:26px 30px}
+.panel{display:none}.panel.active{display:block}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:14px;flex-wrap:wrap}
+.ph h2{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
+.fg label{font-size:.7rem;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.fg input,.fg textarea,.fg select{background:var(--ink);border:1px solid var(--b1);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--em)}
+.fg select option{background:var(--card)}
+.fg textarea{resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;font-family:inherit;font-size:.83rem;font-weight:600;cursor:pointer;border:none;transition:.15s}
+.btn-primary{background:var(--em);color:#fff}.btn-primary:hover{background:var(--em-lt)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--b2)}.btn-ghost:hover{background:rgba(255,255,255,.10)}
+.btn-danger{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.18)}.btn-danger:hover{background:rgba(239,68,68,.22)}
+.btn-sm{padding:5px 11px;font-size:.77rem}
+.btn-xs{padding:3px 9px;font-size:.73rem}
+.btn-full{width:100%;justify-content:center;padding:11px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--b2);border-radius:12px;padding:14px 16px}
+.stat-v{font-size:1.7rem;font-weight:800;letter-spacing:-.03em;margin-bottom:2px}
+.stat-l{font-size:.7rem;color:var(--muted)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 10px;border-bottom:1px solid var(--b2)}
+.tbl td{padding:10px 10px;border-bottom:1px solid var(--b2);vertical-align:middle;font-size:.87rem}
+.tbl tr:hover td{background:rgba(255,255,255,.02)}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;text-transform:uppercase}
+.pill-published{background:rgba(29,122,80,.2);color:#6ee7b7}
+.pill-draft{background:rgba(255,255,255,.07);color:var(--muted)}
+.editor-back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.82rem;cursor:pointer;margin-bottom:18px}
+.editor-back:hover{color:var(--gold)}
+.mono{font-family:'Courier New',monospace;font-size:.86rem;min-height:280px;line-height:1.65}
+.hint{font-size:.7rem;color:var(--muted);margin-top:4px}
+.scard{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.scard h3{font-size:.83rem;font-weight:700;margin-bottom:14px}
+.photo-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.photo-thumb img{width:110px;height:74px;object-fit:cover;border-radius:8px;border:1px solid var(--b2);display:block}
+.photo-thumb-lbl{font-size:.67rem;color:var(--muted);margin-top:4px;text-align:center}
+.setup-steps{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.setup-step{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--muted)}
+.step-n{width:22px;height:22px;border-radius:50%;background:rgba(29,122,80,.2);color:#6ee7b7;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+code{background:var(--ink);padding:2px 6px;border-radius:5px;font-size:.82em;color:var(--em-lt)}
+.save-s{font-size:.75rem;color:var(--muted)}
+.save-s.saving{color:var(--gold)}.save-s.saved{color:#6ee7b7}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:11px 16px;font-size:.83rem;font-weight:600;color:var(--text);z-index:9999;opacity:0;transform:translateY(8px);transition:.22s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+.toast.ok{border-color:rgba(29,122,80,.4);color:#6ee7b7}
+.toast.err{border-color:rgba(239,68,68,.3);color:#fca5a5}
+@media(max-width:680px){.sidebar{display:none}.content{padding:14px}.frow{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="screen" id="screen-login">
+  <div class="card">
+    <div class="logo-row"><div class="mark">JK</div><div class="logo-text">Jethro Kimathi<small>Site Admin</small></div></div>
+    <h2 style="margin-bottom:6px;font-size:1.1rem">Sign in</h2>
+    <p style="color:var(--muted);font-size:.83rem;margin-bottom:18px">Enter your admin password to continue.</p>
+    <div class="fg"><label>Password</label><input type="password" id="login-pw" autocomplete="current-password" placeholder="••••••••"></div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign in →</button>
+    <div id="login-err" style="color:#fca5a5;font-size:.78rem;margin-top:10px;display:none"></div>
+  </div>
+</div>
+
+<!-- STORAGE SETUP -->
+<div class="screen" id="screen-setup">
+  <div class="card" style="max-width:460px">
+    <div class="logo-row"><div class="mark">JK</div><div class="logo-text">One-time setup<small>Connect to Azure Storage</small></div></div>
+    <p style="color:var(--muted);font-size:.82rem;margin-bottom:12px">The admin saves blog posts and settings directly to Azure Blob Storage — no server needed. Set this up once.</p>
+    <ol class="setup-steps">
+      <li class="setup-step"><span class="step-n">1</span><span>Azure Portal → your Storage Account → <strong>Shared access signature</strong></span></li>
+      <li class="setup-step"><span class="step-n">2</span><span>Services: <strong>Blob</strong> · Resource types: <strong>Object</strong> · Permissions: <strong>Read, Write, Create</strong> · Expiry: 2 years</span></li>
+      <li class="setup-step"><span class="step-n">3</span><span>Click <strong>Generate SAS</strong> and copy the <strong>SAS token</strong> (starts with <code>sv=</code>)</span></li>
+    </ol>
+    <div class="fg"><label>Storage base URL</label><input type="url" id="setup-url" placeholder="https://jethrokimathi.blob.core.windows.net/$web"></div>
+    <div class="fg"><label>SAS token</label><input type="text" id="setup-sas" placeholder="sv=2024-…&ss=b&srt=o&sp=rcw&…"></div>
+    <button class="btn btn-primary btn-full" style="margin-top:4px" onclick="saveSetup()">Save &amp; open admin →</button>
+    <div id="setup-err" style="color:#fca5a5;font-size:.78rem;margin-top:10px;display:none"></div>
+    <button style="margin-top:12px;background:none;border:none;color:var(--muted);font-size:.73rem;cursor:pointer;font-family:inherit;width:100%" onclick="resetAll()">Reset saved connection</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="topbar-left"><div class="mark">JK</div> Admin</div>
+    <div class="topbar-right">
+      <span class="save-s" id="save-s"></span>
+      <button class="btn btn-ghost btn-sm" onclick="window.open('/','_blank')">↗ View site</button>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">Log out</button>
+    </div>
+  </div>
+  <div class="body">
+    <div class="sidebar">
+      <div class="nav-section">Content</div>
+      <div class="nav-item active" data-p="dashboard" onclick="nav(this)">📊 Dashboard</div>
+      <div class="nav-item" data-p="posts" onclick="nav(this)">✍ Blog Posts</div>
+      <div class="nav-section">Site</div>
+      <div class="nav-item" data-p="settings" onclick="nav(this)">⚙️ Settings</div>
+      <div class="nav-item" data-p="photos" onclick="nav(this)">🖼 Photos</div>
+      <div class="nav-item" data-p="connection" onclick="nav(this)">🔗 Connection</div>
+    </div>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="ph"><h2>Dashboard</h2><button class="btn btn-primary" onclick="goNewPost()">+ New Post</button></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-v" id="s-pub">—</div><div class="stat-l">Published</div></div>
+          <div class="stat"><div class="stat-v" id="s-dft">—</div><div class="stat-l">Drafts</div></div>
+          <div class="stat"><div class="stat-v" id="s-tot">—</div><div class="stat-l">Total posts</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:18px 20px">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Recent Posts</div>
+          <div id="dash-recent"></div>
+        </div>
+      </div>
+
+      <!-- POSTS + EDITOR -->
+      <div class="panel" id="panel-posts">
+        <div id="posts-list">
+          <div class="ph"><h2>Blog Posts</h2><button class="btn btn-primary" onclick="showEditor()">+ New Post</button></div>
+          <table class="tbl"><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th></th></tr></thead>
+          <tbody id="posts-tbody"></tbody></table>
+        </div>
+        <div id="post-editor" style="display:none;max-width:780px">
+          <div class="editor-back" onclick="hideEditor()">← Back to posts</div>
+          <h2 id="ed-heading" style="margin-bottom:18px;font-size:1.2rem;font-weight:800">New Post</h2>
+          <div class="fg"><label>Title *</label><input id="ed-title" placeholder="When Faith Meets the Field…"></div>
+          <div class="frow">
+            <div class="fg"><label>Category</label>
+              <select id="ed-cat"><option>Ministry</option><option>Agribusiness</option><option>Entrepreneurship</option><option>Personal</option></select>
+            </div>
+            <div class="fg"><label>Status</label>
+              <select id="ed-status"><option value="draft">Draft</option><option value="published">Published</option></select>
+            </div>
+          </div>
+          <div class="fg"><label>Excerpt</label><input id="ed-excerpt" placeholder="Short 1–2 sentence summary for blog listing…"></div>
+          <div class="fg"><label>Cover Image URL</label><input type="url" id="ed-cover" placeholder="/assets/photos/photo.jpg or https://…"></div>
+          <div class="fg">
+            <label>Body (HTML)</label>
+            <textarea class="mono" id="ed-body" rows="16" placeholder="&lt;p&gt;Your post content here…&lt;/p&gt;"></textarea>
+            <div class="hint">Tip: use &lt;h2&gt; &lt;p&gt; &lt;blockquote&gt; &lt;ul&gt; &lt;strong&gt; &lt;em&gt; tags</div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px">
+            <button class="btn btn-primary" onclick="savePost()">Save Post</button>
+            <button class="btn btn-ghost" onclick="hideEditor()">Cancel</button>
+            <button id="del-btn" class="btn btn-danger btn-sm" style="display:none;margin-left:auto" onclick="deletePost()">Delete</button>
+          </div>
+          <div id="ed-msg" style="font-size:.8rem;margin-top:10px;display:none"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="ph"><h2>Site Settings</h2><button class="btn btn-primary" onclick="saveSettings()">Save</button></div>
+        <div class="scard"><h3>Contact Info</h3>
+          <div class="frow">
+            <div class="fg"><label>Email</label><input type="email" id="s-email" placeholder="jethro@example.com"></div>
+            <div class="fg"><label>WhatsApp (with country code)</label><input type="tel" id="s-whatsapp" placeholder="+254712345678"></div>
+          </div>
+        </div>
+        <div class="scard"><h3>Social Media</h3>
+          <div class="frow">
+            <div class="fg"><label>Facebook</label><input type="url" id="s-facebook"></div>
+            <div class="fg"><label>Instagram</label><input type="url" id="s-instagram"></div>
+          </div>
+          <div class="frow">
+            <div class="fg"><label>YouTube</label><input type="url" id="s-youtube"></div>
+            <div class="fg"><label>LinkedIn</label><input type="url" id="s-linkedin"></div>
+          </div>
+          <div class="frow">
+            <div class="fg"><label>X / Twitter</label><input type="url" id="s-twitter"></div>
+            <div class="fg"></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+        <div id="sett-msg" style="font-size:.78rem;margin-top:10px;display:none"></div>
+      </div>
+
+      <!-- PHOTOS -->
+      <div class="panel" id="panel-photos">
+        <div class="ph"><h2>Photos</h2><button class="btn btn-primary" onclick="savePhotos()">Save</button></div>
+        <div class="scard">
+          <h3>Section Photos</h3>
+          <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">Paste a URL or a local path like <code>/assets/photos/filename.jpg</code></p>
+          <div class="fg"><label>Hero background</label><input type="url" id="p-hero" placeholder="/assets/photos/jethro-2-web.jpg"></div>
+          <div class="fg"><label>About section portrait</label><input type="url" id="p-about" placeholder="/assets/photos/jethro-portrait-web.jpg"></div>
+          <div class="fg"><label>Ministry section</label><input type="url" id="p-ministry" placeholder="https://…"></div>
+          <div class="frow">
+            <div class="fg"><label>Agribusiness card 1</label><input type="url" id="p-agri1"></div>
+            <div class="fg"><label>Agribusiness card 2</label><input type="url" id="p-agri2"></div>
+          </div>
+          <div class="fg" style="max-width:380px"><label>Agribusiness card 3</label><input type="url" id="p-agri3"></div>
+        </div>
+        <div class="scard">
+          <h3>Uploaded Photos</h3>
+          <div class="photo-grid" id="photo-grid"></div>
+          <p style="font-size:.73rem;color:var(--muted);margin-top:12px">To add a photo: put it in <code>public/assets/photos/</code> and redeploy with <code>az storage blob upload-batch</code>.</p>
+        </div>
+        <button class="btn btn-primary" onclick="savePhotos()">Save Photo Settings</button>
+        <div id="photo-msg" style="font-size:.78rem;margin-top:10px;display:none"></div>
+      </div>
+
+      <!-- CONNECTION -->
+      <div class="panel" id="panel-connection">
+        <div class="ph"><h2>Storage Connection</h2></div>
+        <div class="scard">
+          <h3>Azure Blob Storage SAS</h3>
+          <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px">Posts and settings are saved directly to blob storage using this SAS token. Stored only in your browser.</p>
+          <div class="fg"><label>Storage base URL</label><input type="url" id="c-url"></div>
+          <div class="fg"><label>SAS token</label><input type="text" id="c-sas"></div>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <button class="btn btn-primary" onclick="updateConn()">Update</button>
+            <button class="btn btn-danger" onclick="resetAll()">Reset &amp; log out</button>
+          </div>
+          <div id="conn-msg" style="font-size:.78rem;margin-top:10px;display:none"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// Default password hash = SHA-256 of "JK2026!" — change via browser console:
+// localStorage.setItem('jk_pass_hash', await crypto.subtle.digest('SHA-256',new TextEncoder().encode('newpass')).then(b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')))
+const DEFAULT_HASH = 'b1a0d9f6e8c23a14f5d7b9e01c2345678901234567890123456789012345678'; // placeholder — replaced below
+
+let storageUrl = localStorage.getItem('jk_storage_url') || '';
+let storageSas = localStorage.getItem('jk_storage_sas') || '';
+let isAuthed   = sessionStorage.getItem('jk_authed') === '1';
+let posts = [], settings = {}, editingSlug = null;
+
+async function sha256(s) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// Default password is "JK2026!" — stored hash computed below on first load
+async function ensureDefaultHash() {
+  if (!localStorage.getItem('jk_pass_hash')) {
+    localStorage.setItem('jk_pass_hash', await sha256('JK2026!'));
+  }
+}
+
+function showScreen(id) {
+  document.getElementById('screen-login').classList.remove('active');
+  document.getElementById('screen-setup').classList.remove('active');
+  document.getElementById('app').classList.remove('active');
+  if (id === 'app') document.getElementById('app').classList.add('active');
+  else document.getElementById(id).classList.add('active');
+}
+
+async function init() {
+  await ensureDefaultHash();
+  if (!isAuthed) { showScreen('screen-login'); return; }
+  if (!storageUrl || !storageSas) { showScreen('screen-setup'); return; }
+  startApp();
+}
+
+async function doLogin() {
+  const pw = document.getElementById('login-pw').value;
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+  const h = await sha256(pw);
+  if (h !== localStorage.getItem('jk_pass_hash')) {
+    err.textContent = 'Incorrect password.'; err.style.display = 'block'; return;
+  }
+  sessionStorage.setItem('jk_authed','1'); isAuthed = true;
+  if (!storageUrl || !storageSas) { showScreen('screen-setup'); return; }
+  startApp();
+}
+document.getElementById('login-pw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function doLogout() { sessionStorage.removeItem('jk_authed'); location.reload(); }
+
+function saveSetup() {
+  const url = document.getElementById('setup-url').value.trim().replace(/\/$/,'');
+  const sas = document.getElementById('setup-sas').value.trim().replace(/^\?/,'');
+  const err = document.getElementById('setup-err');
+  if (!url || !sas) { err.textContent='Both fields required.'; err.style.display='block'; return; }
+  localStorage.setItem('jk_storage_url', url);
+  localStorage.setItem('jk_storage_sas', sas);
+  storageUrl = url; storageSas = sas;
+  startApp();
+}
+
+function resetAll() {
+  ['jk_storage_url','jk_storage_sas'].forEach(k => localStorage.removeItem(k));
+  sessionStorage.removeItem('jk_authed');
+  location.reload();
+}
+
+function updateConn() {
+  const url = document.getElementById('c-url').value.trim().replace(/\/$/,'');
+  const sas = document.getElementById('c-sas').value.trim().replace(/^\?/,'');
+  const msg = document.getElementById('conn-msg');
+  if (!url || !sas) { msg.style.display='block'; msg.style.color='#fca5a5'; msg.textContent='Both fields required.'; return; }
+  localStorage.setItem('jk_storage_url', url);
+  localStorage.setItem('jk_storage_sas', sas);
+  storageUrl = url; storageSas = sas;
+  msg.style.display='block'; msg.style.color='#6ee7b7'; msg.textContent='✓ Updated.';
+  toast('Connection updated ✓');
+}
+
+// Blob read (public static URL, no auth)
+async function readBlob(file) {
+  const res = await fetch(`/${file}?_=${Date.now()}`);
+  if (!res.ok) return null;
+  return res.json();
+}
+
+// Blob write (uses SAS token)
+async function writeBlob(file, data) {
+  const res = await fetch(`${storageUrl}/${file}?${storageSas}`, {
+    method: 'PUT',
+    headers: { 'x-ms-blob-type':'BlockBlob', 'Content-Type':'application/json' },
+    body: JSON.stringify(data, null, 2),
+  });
+  if (!res.ok) { const t=await res.text(); throw new Error(`${res.status}: ${t.slice(0,160)}`); }
+}
+
+function setSave(s) {
+  const el = document.getElementById('save-s');
+  el.className = 'save-s ' + s;
+  el.textContent = s==='saving'?'● Saving…':s==='saved'?'✓ Saved':'';
+  if (s==='saved') setTimeout(()=>{ if(el.textContent==='✓ Saved') el.textContent=''; },3000);
+}
+
+async function startApp() {
+  showScreen('app');
+  document.getElementById('c-url').value = storageUrl;
+  document.getElementById('c-sas').value = storageSas;
+  [posts, settings] = await Promise.all([readBlob('posts.json'), readBlob('settings.json')]);
+  posts = posts || []; settings = settings || {};
+  populateSettings();
+  renderDashboard();
+}
+
+function nav(el) {
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+el.dataset.p).classList.add('active');
+  if (el.dataset.p==='posts') renderPostsTable();
+  if (el.dataset.p==='photos') { populateSettings(); renderPhotoGrid(); }
+}
+
+function goNewPost() { nav(document.querySelector('[data-p="posts"]')); showEditor(); }
+
+let toastTimer;
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${type} show`;
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+function renderDashboard() {
+  const pub = posts.filter(p=>p.status==='published');
+  const dft = posts.filter(p=>p.status==='draft');
+  document.getElementById('s-pub').textContent = pub.length;
+  document.getElementById('s-dft').textContent = dft.length;
+  document.getElementById('s-tot').textContent = posts.length;
+  const recent = [...posts].sort((a,b)=>new Date(b.publishedAt)-new Date(a.publishedAt)).slice(0,5);
+  const el = document.getElementById('dash-recent');
+  if (!recent.length) { el.innerHTML='<div style="color:var(--muted);font-size:.83rem;padding:6px 0">No posts yet. <span style="color:var(--em-lt);cursor:pointer" onclick="goNewPost()">Create your first →</span></div>'; return; }
+  el.innerHTML = recent.map(p=>{
+    const d=new Date(p.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--b2)">
+      <div><div style="font-weight:600;font-size:.87rem">${esc(p.title)}</div><div style="font-size:.7rem;color:var(--muted)">${esc(p.category)} · ${d}</div></div>
+      <div style="display:flex;gap:7px;align-items:center"><span class="pill pill-${p.status}">${p.status}</span>
+        <button class="btn btn-ghost btn-xs" onclick="nav(document.querySelector('[data-p=posts]'));editPost('${esc(p.slug)}')">Edit</button></div>
+    </div>`;
+  }).join('');
+}
+
+function renderPostsTable() {
+  const tb = document.getElementById('posts-tbody');
+  if (!posts.length) { tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--muted)">No posts yet. <span style="color:var(--em-lt);cursor:pointer" onclick="showEditor()">Create your first →</span></td></tr>`; return; }
+  tb.innerHTML = [...posts].sort((a,b)=>new Date(b.publishedAt)-new Date(a.publishedAt)).map(p=>{
+    const d=new Date(p.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    return `<tr>
+      <td style="font-weight:600;max-width:220px">${esc(p.title)}<div style="font-size:.7rem;color:var(--muted)">?slug=${esc(p.slug)}</div></td>
+      <td style="color:var(--muted);font-size:.82rem">${esc(p.category)}</td>
+      <td><span class="pill pill-${p.status}">${p.status}</span></td>
+      <td style="font-size:.78rem;color:var(--muted)">${d}</td>
+      <td><div style="display:flex;gap:5px">
+        <button class="btn btn-ghost btn-xs" onclick="editPost('${esc(p.slug)}')">Edit</button>
+        <a class="btn btn-ghost btn-xs" href="/blog/post.html?slug=${esc(p.slug)}" target="_blank">View</a>
+      </div></td></tr>`;
+  }).join('');
+}
+
+function showEditor(post) {
+  document.getElementById('posts-list').style.display='none';
+  document.getElementById('post-editor').style.display='block';
+  document.getElementById('ed-msg').style.display='none';
+  if (post) {
+    editingSlug=post.slug;
+    document.getElementById('ed-heading').textContent='Edit Post';
+    document.getElementById('ed-title').value=post.title||'';
+    document.getElementById('ed-cat').value=post.category||'Ministry';
+    document.getElementById('ed-status').value=post.status||'draft';
+    document.getElementById('ed-excerpt').value=post.excerpt||'';
+    document.getElementById('ed-cover').value=post.coverImage||'';
+    document.getElementById('ed-body').value=post.body||'';
+    document.getElementById('del-btn').style.display='inline-flex';
+  } else {
+    editingSlug=null;
+    document.getElementById('ed-heading').textContent='New Post';
+    ['ed-title','ed-excerpt','ed-cover','ed-body'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('ed-cat').value='Ministry';
+    document.getElementById('ed-status').value='draft';
+    document.getElementById('del-btn').style.display='none';
+  }
+}
+
+function hideEditor() {
+  document.getElementById('post-editor').style.display='none';
+  document.getElementById('posts-list').style.display='block';
+  renderPostsTable(); editingSlug=null;
+}
+
+function editPost(slug) { const p=posts.find(x=>x.slug===slug); if(p) showEditor(p); }
+
+async function savePost() {
+  const msg=document.getElementById('ed-msg');
+  const title=document.getElementById('ed-title').value.trim();
+  const body=document.getElementById('ed-body').value.trim();
+  if (!title||!body) { msg.style.display='block'; msg.style.color='#fca5a5'; msg.textContent='Title and body are required.'; return; }
+  msg.style.display='none';
+  if (editingSlug) {
+    const idx=posts.findIndex(p=>p.slug===editingSlug);
+    if (idx>=0) posts[idx]={...posts[idx],title,body,excerpt:document.getElementById('ed-excerpt').value.trim(),coverImage:document.getElementById('ed-cover').value.trim(),category:document.getElementById('ed-cat').value,status:document.getElementById('ed-status').value,updatedAt:new Date().toISOString()};
+  } else {
+    let s=slugify(title),f=s,n=2;
+    while(posts.find(p=>p.slug===f)) f=`${s}-${n++}`;
+    posts.push({id:(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)),slug:f,title,body,excerpt:document.getElementById('ed-excerpt').value.trim(),coverImage:document.getElementById('ed-cover').value.trim(),category:document.getElementById('ed-cat').value,status:document.getElementById('ed-status').value,publishedAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
+  }
+  try { setSave('saving'); await writeBlob('posts.json',posts); setSave('saved'); toast(editingSlug?'Post updated ✓':'Post created ✓'); renderDashboard(); hideEditor(); }
+  catch(e) { setSave(''); msg.style.display='block'; msg.style.color='#fca5a5'; msg.textContent='Save failed: '+e.message; toast('Save failed','err'); }
+}
+
+async function deletePost() {
+  if (!editingSlug) return;
+  if (!confirm(`Delete "${document.getElementById('ed-title').value}"? Cannot be undone.`)) return;
+  posts=posts.filter(p=>p.slug!==editingSlug);
+  try { setSave('saving'); await writeBlob('posts.json',posts); setSave('saved'); toast('Deleted'); renderDashboard(); hideEditor(); }
+  catch(e) { setSave(''); toast('Delete failed: '+e.message,'err'); }
+}
+
+const SKEYS=['email','whatsapp','facebook','instagram','youtube','linkedin','twitter'];
+const PKEYS={heroPhoto:'p-hero',aboutPhoto:'p-about',ministryPhoto:'p-ministry',agriPhoto1:'p-agri1',agriPhoto2:'p-agri2',agriPhoto3:'p-agri3'};
+
+function populateSettings() {
+  SKEYS.forEach(k=>{const el=document.getElementById(`s-${k}`);if(el) el.value=settings[k]||'';});
+  Object.entries(PKEYS).forEach(([k,id])=>{const el=document.getElementById(id);if(el) el.value=settings[k]||'';});
+}
+
+async function saveSettings() {
+  SKEYS.forEach(k=>{const el=document.getElementById(`s-${k}`);if(el) settings[k]=el.value.trim();});
+  try { setSave('saving'); await writeBlob('settings.json',settings); setSave('saved'); toast('Settings saved ✓');
+    const m=document.getElementById('sett-msg'); m.style.display='block'; m.style.color='#6ee7b7'; m.textContent='✓ Saved.'; setTimeout(()=>m.style.display='none',2000); }
+  catch(e) { setSave(''); toast('Failed: '+e.message,'err'); }
+}
+
+async function savePhotos() {
+  Object.entries(PKEYS).forEach(([k,id])=>{const el=document.getElementById(id);if(el) settings[k]=el.value.trim();});
+  try { setSave('saving'); await writeBlob('settings.json',settings); setSave('saved'); toast('Photos saved ✓');
+    const m=document.getElementById('photo-msg'); m.style.display='block'; m.style.color='#6ee7b7'; m.textContent='✓ Saved. Refresh the site to see changes.'; setTimeout(()=>m.style.display='none',3000); }
+  catch(e) { setSave(''); toast('Failed: '+e.message,'err'); }
+}
+
+function renderPhotoGrid() {
+  const grid=document.getElementById('photo-grid');
+  const photos=[{label:'Hero bg',url:settings.heroPhoto||'/assets/photos/jethro-2-web.jpg'},{label:'Portrait',url:settings.aboutPhoto||'/assets/photos/jethro-portrait-web.jpg'}];
+  grid.innerHTML=photos.map(p=>`<div class="photo-thumb"><img src="${esc(p.url)}" onerror="this.parentElement.style.display='none'" loading="lazy"><div class="photo-thumb-lbl">${esc(p.label)}</div></div>`).join('');
+}
+
+function slugify(s){return s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+init();
+</script>
+</body>
+</html>
