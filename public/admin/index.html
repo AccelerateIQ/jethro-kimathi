@@ -427,7 +427,6 @@ function getLockPin() { return Array.from(lockDigits).map(function(d){ return d.
 
 async function verifyLock() {
   var entered = getLockPin();
-  if (entered === ADMIN_PIN) { unlock(); return; }
   var storedHash = await loadPinHash();
   var enteredHash = await sha256hex(entered);
   if (storedHash !== null && enteredHash === storedHash) { unlock(); return; }
@@ -452,9 +451,9 @@ function lockApp() {
   lockDigits[0].focus();
 }
 
-// Apply lock only in production when a real PIN is configured and no session exists
-if (ADMIN_PIN && sessionStorage.getItem(SESSION_KEY) !== '1') lockApp();
-else { sessionStorage.setItem(SESSION_KEY, '1'); loadGallery(); }
+// Always show lock screen unless session is active
+if (sessionStorage.getItem(SESSION_KEY) !== '1') lockApp();
+else { loadGallery(); }
 
 // Hide Before & After tab if this site doesn't use it
 if (!HAS_BA) {
