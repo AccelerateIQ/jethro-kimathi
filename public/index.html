@@ -322,7 +322,22 @@ h2.section-h2 {
 .form-msg.ok  { color: #6ee7b7; display: block; }
 .form-msg.err { color: #fca5a5; display: block; }
 @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 40px; } .form-row { grid-template-columns: 1fr; } }
-
+/* ── Gallery ───────────────────────────────────────────────────────────────── */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:16px}
+.gallery-item{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;cursor:pointer;background:var(--card)}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .35s;display:block}
+.gallery-item:hover img{transform:scale(1.06)}
+.gallery-item .gal-overlay{position:absolute;inset:0;background:rgba(6,10,7,.42);opacity:0;transition:.2s;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff}
+.gallery-item:hover .gal-overlay{opacity:1}
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+#lightbox.open{display:flex}
+#lightbox-img{max-width:100%;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.8)}
+#lb-close{position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;opacity:.7;transition:.15s;line-height:1;padding:4px 10px}
+#lb-close:hover{opacity:1}
+#lb-prev,#lb-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.13);border:none;color:#fff;font-size:2rem;line-height:1;padding:10px 18px;border-radius:10px;cursor:pointer;transition:.15s}
+#lb-prev{left:16px}#lb-next{right:16px}
+#lb-prev:hover,#lb-next:hover{background:rgba(255,255,255,.24)}
+@media(max-width:600px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:6px}#lb-prev,#lb-next{display:none}}
 /* ── Footer ────────────────────────────────────────────────────────────── */
 footer {
   background: var(--card2); border-top: 1px solid var(--b2);
@@ -541,6 +556,15 @@ footer {
   <div class="blog-grid" id="blog-grid">
     <div class="blog-empty">Loading latest posts…</div>
   </div>
+</div>
+</div>
+
+<!-- ── PHOTO GALLERY ───────────────────────────────────────────────────────── -->
+<div id="gallery" style="display:none">
+<div class="section">
+  <div class="eyebrow">Gallery</div>
+  <h2 class="section-h2">Moments &amp; Milestones</h2>
+  <div class="gallery-grid" id="gallery-grid"></div>
 </div>
 </div>
 
@@ -796,9 +820,57 @@ async function loadPhotos() {
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 
+// ── Gallery ─────────────────────────────────────────────────────────────────
+let _galUrls = [];
+let _lbIdx = 0;
+
+async function loadGallery() {
+  try {
+    const r = await fetch('/gallery.json?t=' + Date.now());
+    if (!r.ok) return;
+    _galUrls = await r.json();
+    if (!Array.isArray(_galUrls) || !_galUrls.length) return;
+    document.getElementById('gallery').style.display = '';
+    document.getElementById('gallery-grid').innerHTML = _galUrls.map((url, i) =>
+      `<div class="gallery-item" onclick="openLb(${i})">
+        <img src="${esc(url)}" alt="Gallery photo" loading="lazy">
+        <div class="gal-overlay">&#x26F6;</div>
+      </div>`
+    ).join('');
+  } catch (_) {}
+}
+
+function openLb(idx) {
+  _lbIdx = idx;
+  document.getElementById('lightbox-img').src = _galUrls[idx];
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lbNav(d) {
+  _lbIdx = (_lbIdx + d + _galUrls.length) % _galUrls.length;
+  document.getElementById('lightbox-img').src = _galUrls[_lbIdx];
+}
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft')  lbNav(-1);
+});
+
+loadGallery();
 loadPhotos();
 loadSettings();
 loadBlogPosts();
 </script>
+<div id="lightbox" onclick="if(event.target===this)closeLb()">
+  <button id="lb-close" onclick="closeLb()">&#x2715;</button>
+  <button id="lb-prev" onclick="lbNav(-1)">&#x2039;</button>
+  <img id="lightbox-img" src="" alt="Photo">
+  <button id="lb-next" onclick="lbNav(1)">&#x203A;</button>
+</div>
 </body>
 </html>

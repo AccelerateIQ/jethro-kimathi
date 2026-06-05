@@ -367,7 +367,8 @@ var CONTAINER    = '$web';
 var SAS_TOKEN    = 'se=2028-06-05T14%3A00Z&sp=rwdlac&spr=https&sv=2022-11-02&ss=b&srt=sco&sig=Wj6bx5ZbPER6ur2lTifJ4qAERKI4y2ro6a3R0udLM54%3D';
 var CONTAINER_BA = 'before-after';
 var SAS_TOKEN_BA = '';
-var PREFIX       = 'gallery/';
+var PREFIX              = 'gallery/';
+var GALLERY_PUBLIC_BASE = 'https://jethrokimathi.z13.web.core.windows.net';
 var ADMIN_PIN    = '2026';
 var SESSION_KEY  = 'jk-admin-session'; // unique per site so sessions don't cross
 var SITE_ID          = 'jethrokimathi';
@@ -549,7 +550,7 @@ function uploadAll() {
   });
   chain.then(function(){
     setTimeout(function(){
-      if (fileQueue.every(function(i){ return i.status === 'done'; })) { clearQueue(); loadGallery(); }
+      if (fileQueue.every(function(i){ return i.status === 'done'; })) { clearQueue(); loadGallery(); syncGalleryJson(); }
     }, 1500);
   });
 }
@@ -648,7 +649,29 @@ function deleteSelected() {
   Promise.all(names.map(function(name){
     var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER + '/' + name + '?' + SAS_TOKEN;
     return fetch(url, { method: 'DELETE' });
-  })).then(function(){ selected = {}; loadGallery(); });
+  })).then(function(){ selected = {}; loadGallery(); syncGalleryJson(); });
+}
+
+async function syncGalleryJson() {
+  if (!GALLERY_PUBLIC_BASE) return;
+  try {
+    var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER
+      + '?restype=container&comp=list&prefix=' + encodeURIComponent(PREFIX) + '&' + SAS_TOKEN;
+    var r = await fetch(url);
+    if (!r.ok) return;
+    var xml = await r.text();
+    var doc = new DOMParser().parseFromString(xml, 'application/xml');
+    var urls = Array.from(doc.querySelectorAll('Name'))
+      .map(function(n){ return n.textContent; })
+      .filter(function(name){ return name !== PREFIX && /\.(jpe?g|png|webp)$/i.test(name); })
+      .map(function(name){ return GALLERY_PUBLIC_BASE + '/' + name; });
+    var writeUrl = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER + '/gallery.json?' + SAS_TOKEN;
+    await fetch(writeUrl, {
+      method: 'PUT',
+      headers: { 'x-ms-blob-type': 'BlockBlob', 'Content-Type': 'application/json', 'x-ms-blob-cache-control': 'no-cache, must-revalidate' },
+      body: JSON.stringify(urls)
+    });
+  } catch(e) { console.warn('[gallery] syncGalleryJson failed:', e); }
 }
 
 // ── Change PIN ────────────────────────────────────────────────────────────────
