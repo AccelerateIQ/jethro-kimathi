@@ -429,7 +429,7 @@ async function verifyLock() {
   if (entered === ADMIN_PIN) { unlock(); return; }
   var storedHash = await loadPinHash();
   var enteredHash = await sha256hex(entered);
-  if (storedHash === null || enteredHash === storedHash) { unlock(); return; }
+  if (storedHash !== null && enteredHash === storedHash) { unlock(); return; }
   document.getElementById('pinError').textContent = 'Incorrect PIN — try again';
   lockDigits.forEach(function(d){ d.value = ''; });
   lockDigits[0].focus();
