@@ -2,524 +2,1023 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin — Jethro Kimathi</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jethro Kimathi — Client Admin</title>
 <style>
-:root{--ink:#060a07;--card:#0d1410;--card2:#121a14;--em:#1d7a50;--em-lt:#27a36a;--gold:#c9a227;--text:#e8ede9;--muted:#7a8c7e;--b1:rgba(255,255,255,.10);--b2:rgba(255,255,255,.06);--danger:#ef4444}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;flex-direction:column}
-.screen.active{display:flex}
-.card{background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:36px;width:100%;max-width:400px}
-.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:22px}
-.mark{width:34px;height:34px;background:linear-gradient(135deg,var(--em),var(--gold));border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.95rem;flex-shrink:0}
-.logo-text{font-weight:800;font-size:1rem}
-.logo-text small{display:block;font-size:.7rem;font-weight:400;color:var(--muted)}
-.app{display:none;min-height:100vh;flex-direction:column}
-.app.active{display:flex}
-.topbar{background:var(--card2);border-bottom:1px solid var(--b2);padding:0 22px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.topbar-left{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.92rem}
-.topbar-right{display:flex;align-items:center;gap:8px}
-.body{display:flex;flex:1;min-height:0}
-.sidebar{width:190px;flex-shrink:0;background:var(--card2);border-right:1px solid var(--b2);padding:12px 0}
-.nav-section{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 16px 3px;margin-top:6px}
-.nav-item{display:flex;align-items:center;gap:8px;padding:9px 16px;font-size:.84rem;font-weight:600;color:var(--muted);cursor:pointer;border-left:3px solid transparent;transition:.12s}
-.nav-item:hover{color:var(--text);background:rgba(255,255,255,.04)}
-.nav-item.active{color:var(--text);background:rgba(29,122,80,.12);border-left-color:var(--em)}
-.content{flex:1;overflow-y:auto;padding:26px 30px}
-.panel{display:none}.panel.active{display:block}
-.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:14px;flex-wrap:wrap}
-.ph h2{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
-.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
-.fg label{font-size:.7rem;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
-.fg input,.fg textarea,.fg select{background:var(--ink);border:1px solid var(--b1);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
-.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--em)}
-.fg select option{background:var(--card)}
-.fg textarea{resize:vertical}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;font-family:inherit;font-size:.83rem;font-weight:600;cursor:pointer;border:none;transition:.15s}
-.btn-primary{background:var(--em);color:#fff}.btn-primary:hover{background:var(--em-lt)}
-.btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--b2)}.btn-ghost:hover{background:rgba(255,255,255,.10)}
-.btn-danger{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.18)}.btn-danger:hover{background:rgba(239,68,68,.22)}
-.btn-sm{padding:5px 11px;font-size:.77rem}
-.btn-xs{padding:3px 9px;font-size:.73rem}
-.btn-full{width:100%;justify-content:center;padding:11px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
-.stat{background:var(--card);border:1px solid var(--b2);border-radius:12px;padding:14px 16px}
-.stat-v{font-size:1.7rem;font-weight:800;letter-spacing:-.03em;margin-bottom:2px}
-.stat-l{font-size:.7rem;color:var(--muted)}
-.tbl{width:100%;border-collapse:collapse}
-.tbl th{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 10px;border-bottom:1px solid var(--b2)}
-.tbl td{padding:10px 10px;border-bottom:1px solid var(--b2);vertical-align:middle;font-size:.87rem}
-.tbl tr:hover td{background:rgba(255,255,255,.02)}
-.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;text-transform:uppercase}
-.pill-published{background:rgba(29,122,80,.2);color:#6ee7b7}
-.pill-draft{background:rgba(255,255,255,.07);color:var(--muted)}
-.editor-back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.82rem;cursor:pointer;margin-bottom:18px}
-.editor-back:hover{color:var(--gold)}
-.mono{font-family:'Courier New',monospace;font-size:.86rem;min-height:280px;line-height:1.65}
-.hint{font-size:.7rem;color:var(--muted);margin-top:4px}
-.scard{background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:20px 22px;margin-bottom:16px}
-.scard h3{font-size:.83rem;font-weight:700;margin-bottom:14px}
-.photo-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-.photo-thumb img{width:110px;height:74px;object-fit:cover;border-radius:8px;border:1px solid var(--b2);display:block}
-.photo-thumb-lbl{font-size:.67rem;color:var(--muted);margin-top:4px;text-align:center}
-.setup-steps{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0}
-.setup-step{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--muted)}
-.step-n{width:22px;height:22px;border-radius:50%;background:rgba(29,122,80,.2);color:#6ee7b7;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-code{background:var(--ink);padding:2px 6px;border-radius:5px;font-size:.82em;color:var(--em-lt)}
-.save-s{font-size:.75rem;color:var(--muted)}
-.save-s.saving{color:var(--gold)}.save-s.saved{color:#6ee7b7}
-.toast{position:fixed;bottom:22px;right:22px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:11px 16px;font-size:.83rem;font-weight:600;color:var(--text);z-index:9999;opacity:0;transform:translateY(8px);transition:.22s;pointer-events:none}
-.toast.show{opacity:1;transform:none}
-.toast.ok{border-color:rgba(29,122,80,.4);color:#6ee7b7}
-.toast.err{border-color:rgba(239,68,68,.3);color:#fca5a5}
-@media(max-width:680px){.sidebar{display:none}.content{padding:14px}.frow{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1c1c1c;min-height:100vh}
+:root{--ocean:#0a4d68;--sun:#f08a2c;--green:#25d366;--danger:#e53935;--muted:#5a6770}
+
+/* ── Lock screen ── */
+#lockScreen{position:fixed;inset:0;background:var(--ocean);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:18px;padding:24px;text-align:center}
+#lockScreen h2{color:#fff;font-size:1.5rem}
+#lockScreen p{color:rgba(255,255,255,.75);font-size:.95rem}
+.pin-row{display:flex;gap:10px;margin-top:8px}
+.pin-digit{width:54px;height:60px;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:1.8rem;text-align:center;outline:none;font-weight:700;-webkit-text-security:disc}
+.pin-digit:focus{border-color:var(--sun)}
+#pinError{color:#ff8a80;font-size:.9rem;min-height:1.2em}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:999px;font-weight:600;font-size:1rem;border:none;cursor:pointer;transition:transform .15s,opacity .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.5;pointer-events:none}
+.btn-sun{background:var(--sun);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.3)}
+.btn-outline{background:transparent;color:var(--ocean);border:2px solid var(--ocean)}
+
+/* ── App shell ── */
+#app{display:block;max-width:940px;margin:0 auto;padding:24px 20px}
+.app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.brand h1{font-size:1.25rem;color:var(--ocean);font-weight:800}
+.brand p{font-size:.82rem;color:var(--muted);margin-top:2px}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:4px;background:#e2e8f0;border-radius:14px;padding:4px;margin-bottom:28px;overflow-x:auto}
+.tab-btn{flex:1;min-width:90px;padding:10px 8px;border:none;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);transition:.15s;white-space:nowrap}
+.tab-btn.active{background:#fff;color:var(--ocean);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── Upload panel ── */
+.drop-zone{border:3px dashed #c0cad5;border-radius:18px;padding:48px 24px;text-align:center;cursor:pointer;transition:.2s;background:#fff}
+.drop-zone.over{border-color:var(--ocean);background:#f0f8ff}
+.drop-zone .ic{font-size:3rem;margin-bottom:10px}
+.drop-zone h3{color:var(--ocean);margin-bottom:6px}
+.drop-zone p{color:var(--muted);font-size:.88rem}
+#fileInput{display:none}
+.queue{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.q-item{background:#fff;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.q-thumb{width:52px;height:52px;border-radius:8px;object-fit:cover;background:#e2e8f0;flex-shrink:0}
+.q-info{flex:1;min-width:0}
+.q-name{font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-size{color:var(--muted);font-size:.78rem}
+.progress-bar{height:6px;background:#e2e8f0;border-radius:3px;margin-top:6px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:3px;width:0%;transition:width .3s}
+.q-status{font-size:.78rem;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.q-status.waiting{background:#f0f4f8;color:var(--muted)}
+.q-status.uploading{background:#fff3e0;color:#e65100}
+.q-status.done{background:#e8f5e9;color:#2e7d32}
+.q-status.error{background:#ffebee;color:#c62828}
+.upload-actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+
+/* ── Manage panel ── */
+.manage-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.manage-count{color:var(--muted);font-size:.88rem;flex:1}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:4px}
+.m-item{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;cursor:pointer;background:#e2e8f0}
+.m-item img,.m-item video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.m-item:hover img,.m-item:hover video{transform:scale(1.04)}
+.m-item .sel-overlay{position:absolute;inset:0;background:rgba(229,57,53,.45);display:none;align-items:center;justify-content:center;font-size:2rem}
+.m-item.selected .sel-overlay{display:flex}
+.m-item .m-name{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);color:#fff;font-size:.68rem;padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.loading-msg{color:var(--muted);padding:48px;text-align:center;font-size:.95rem}
+
+/* ── PIN panel ── */
+.pin-card{background:#fff;border-radius:18px;padding:32px;max-width:420px;margin:0 auto;box-shadow:0 2px 16px rgba(0,0,0,.07)}
+.pin-card h3{color:var(--ocean);font-size:1.1rem;margin-bottom:6px}
+.pin-card p{color:var(--muted);font-size:.88rem;margin-bottom:24px;line-height:1.5}
+.pin-row-sm{display:flex;gap:8px;margin-bottom:16px}
+.pin-row-sm input{width:46px;height:52px;border-radius:9px;border:2px solid #d0d7dc;font-size:1.5rem;text-align:center;outline:none;font-weight:700;-webkit-text-security:disc}
+.pin-row-sm input:focus{border-color:var(--ocean)}
+.pin-label{font-size:.82rem;font-weight:600;color:var(--ocean);margin-bottom:6px}
+.pin-msg{font-size:.88rem;min-height:1.2em;margin-top:10px}
+.pin-msg.ok{color:#2e7d32}
+.pin-msg.err{color:#c62828}
+
+/* ── Before & After panel ── */
+.ba-pair-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.ba-drop{border:3px dashed #c0cad5;border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;transition:.2s;background:#fff;position:relative}
+.ba-drop.over{border-color:var(--ocean);background:#f0f8ff}
+.ba-drop h4{font-size:.88rem;font-weight:700;margin-bottom:6px;color:var(--ocean)}
+.ba-drop p{font-size:.78rem;color:var(--muted)}
+.ba-drop.has-file{border-color:#25d366;background:#f0fff4}
+.ba-drop.has-file p{color:#2e7d32;font-weight:600;font-size:.82rem}
+.ba-drop img.preview{width:100%;height:90px;object-fit:cover;border-radius:8px;margin-bottom:6px;display:none}
+.ba-drop.has-file img.preview{display:block}
+.ba-input-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:flex-end}
+.ba-input-row label{font-size:.82rem;font-weight:600;color:var(--ocean);display:block;margin-bottom:4px}
+.ba-input-row input{padding:9px 12px;border-radius:8px;border:2px solid #d0d7dc;font-size:.9rem;outline:none;width:100%}
+.ba-input-row input:focus{border-color:var(--ocean)}
+.ba-field{flex:1;min-width:160px}
+.ba-field-sm{width:110px;flex-shrink:0}
+.slug-preview{font-size:.75rem;color:var(--muted);margin-top:3px;min-height:1em}
+.ba-projects-section{margin-top:32px}
+.ba-projects-title{font-size:.95rem;font-weight:700;color:var(--ocean);margin-bottom:12px}
+.ba-project-group{background:#fff;border-radius:12px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.ba-project-name{font-weight:700;font-size:.92rem;color:#334155;margin-bottom:8px}
+.ba-pairs-row{display:flex;gap:8px;flex-wrap:wrap}
+.ba-pair-thumb{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;background:#e2e8f0}
+.ba-pair-thumb img{width:100%;height:100%;object-fit:cover}
+.ba-pair-thumb .role-badge{position:absolute;bottom:2px;left:2px;font-size:.6rem;font-weight:700;padding:1px 5px;border-radius:4px;text-transform:uppercase}
+.ba-pair-thumb .role-badge.before{background:rgba(0,0,0,.6);color:#fff}
+.ba-pair-thumb .role-badge.after{background:rgba(37,211,102,.85);color:#fff}
+.ba-pair-thumb .del-btn{position:absolute;top:2px;right:2px;background:rgba(229,57,53,.85);color:#fff;border:none;border-radius:4px;font-size:.7rem;cursor:pointer;padding:1px 5px;display:none}
+.ba-pair-thumb:hover .del-btn{display:block}
+
+/* ── Stats panel ── */
+.stats-coming{text-align:center;padding:60px 24px;color:var(--muted)}
+.stats-coming .ic{font-size:3rem;margin-bottom:12px}
+.stats-coming h3{font-size:1.1rem;color:#334155;margin-bottom:8px}
+.stats-coming p{font-size:.88rem;line-height:1.6}
+
+/* ── Misc ── */
+.section-title{font-size:1rem;font-weight:700;color:var(--ocean);margin-bottom:4px}
+.section-hint{font-size:.82rem;color:var(--muted);margin-bottom:20px}
+
+/* ── Blog tab ── */
+.blog-posts-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.blog-post-item{background:#fff;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.blog-post-meta{flex:1;min-width:0}
+.blog-post-title{font-weight:700;font-size:.95rem;color:#1c1c1c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blog-post-sub{font-size:.78rem;color:var(--muted);margin-top:2px}
+.blog-status{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.blog-status.published{background:#e8f5e9;color:#2e7d32}
+.blog-status.draft{background:#f0f4f8;color:var(--muted)}
+.blog-editor{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 16px rgba(0,0,0,.07)}
+.blog-field{margin-bottom:16px}
+.blog-field label{display:block;font-size:.82rem;font-weight:700;color:var(--ocean);margin-bottom:5px}
+.blog-field input,.blog-field select,.blog-field textarea{width:100%;padding:10px 13px;border-radius:8px;border:2px solid #d0d7dc;font-size:.9rem;outline:none;font-family:inherit;color:#1c1c1c}
+.blog-field input:focus,.blog-field select:focus,.blog-field textarea:focus{border-color:var(--ocean)}
+.blog-field textarea{min-height:220px;resize:vertical}
+.blog-row{display:flex;gap:12px;flex-wrap:wrap}
+.blog-row .blog-field{flex:1;min-width:140px}
+.blog-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.blog-back{background:none;border:none;color:var(--ocean);font-weight:700;font-size:.9rem;cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:5px;margin-bottom:16px}
+
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="screen" id="screen-login">
-  <div class="card">
-    <div class="logo-row"><div class="mark">JK</div><div class="logo-text">Jethro Kimathi<small>Site Admin</small></div></div>
-    <h2 style="margin-bottom:6px;font-size:1.1rem">Sign in</h2>
-    <p style="color:var(--muted);font-size:.83rem;margin-bottom:18px">Enter your admin password to continue.</p>
-    <div class="fg"><label>Password</label><input type="password" id="login-pw" autocomplete="current-password" placeholder="••••••••"></div>
-    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign in →</button>
-    <div id="login-err" style="color:#fca5a5;font-size:.78rem;margin-top:10px;display:none"></div>
+<!-- ── Lock screen ── -->
+<div id="lockScreen">
+  <h2>Client Admin Portal</h2>
+  <p>Jethro Kimathi</p>
+  <a href="/" style="color:rgba(255,255,255,.7);font-size:.88rem;text-decoration:none;margin-top:-6px">← Return to website</a>
+  <div class="pin-row" id="pinRow">
+    <input class="pin-digit" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+    <input class="pin-digit" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+    <input class="pin-digit" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+    <input class="pin-digit" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
   </div>
+  <div id="pinError"></div>
+  <a href="/" class="btn btn-ghost" style="margin-top:8px">← Back to site</a>
 </div>
 
-<!-- STORAGE SETUP -->
-<div class="screen" id="screen-setup">
-  <div class="card" style="max-width:460px">
-    <div class="logo-row"><div class="mark">JK</div><div class="logo-text">One-time setup<small>Connect to Azure Storage</small></div></div>
-    <p style="color:var(--muted);font-size:.82rem;margin-bottom:12px">The admin saves blog posts and settings directly to Azure Blob Storage — no server needed. Set this up once.</p>
-    <ol class="setup-steps">
-      <li class="setup-step"><span class="step-n">1</span><span>Azure Portal → your Storage Account → <strong>Shared access signature</strong></span></li>
-      <li class="setup-step"><span class="step-n">2</span><span>Services: <strong>Blob</strong> · Resource types: <strong>Object</strong> · Permissions: <strong>Read, Write, Create</strong> · Expiry: 2 years</span></li>
-      <li class="setup-step"><span class="step-n">3</span><span>Click <strong>Generate SAS</strong> and copy the <strong>SAS token</strong> (starts with <code>sv=</code>)</span></li>
-    </ol>
-    <div class="fg"><label>Storage base URL</label><input type="url" id="setup-url" placeholder="https://jethrokimathi.blob.core.windows.net/$web"></div>
-    <div class="fg"><label>SAS token</label><input type="text" id="setup-sas" placeholder="sv=2024-…&ss=b&srt=o&sp=rcw&…"></div>
-    <button class="btn btn-primary btn-full" style="margin-top:4px" onclick="saveSetup()">Save &amp; open admin →</button>
-    <div id="setup-err" style="color:#fca5a5;font-size:.78rem;margin-top:10px;display:none"></div>
-    <button style="margin-top:12px;background:none;border:none;color:var(--muted);font-size:.73rem;cursor:pointer;font-family:inherit;width:100%" onclick="resetAll()">Reset saved connection</button>
+<!-- ── App ── -->
+<div id="app">
+  <div class="app-header">
+    <div class="brand">
+      <h1>Jethro Kimathi</h1>
+      <p>Client Admin Portal</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <a href="/" class="btn btn-outline" style="font-size:.85rem;padding:8px 16px;text-decoration:none">🌐 View Site</a>
+      <button class="btn btn-ghost" onclick="lockApp()" style="background:#f0f4f8;color:var(--muted);border:none;padding:8px 16px;font-size:.85rem">🔒 Lock</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('upload',this)">� Gallery</button>
+    <button class="tab-btn" onclick="showTab('pin',this)">🔑 Change PIN</button>
+    <button id="tab-btn-ba" class="tab-btn" onclick="showTab('ba',this)">🔀 Before &amp; After</button>
+    <button class="tab-btn" onclick="showTab('stats',this)">📊 Stats</button>
+    <button id="tab-btn-blog" class="tab-btn" onclick="showTab('blog',this)">✍️ Blog</button>
+  </div>
+
+  <!-- Upload -->
+  <div id="tab-upload" class="tab-panel active">
+    <div class="section-title">Add Photos &amp; Videos</div>
+    <div class="section-hint">Uploaded files appear in your gallery immediately. Max 50 MB per file.</div>
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <div class="ic">📸</div>
+      <h3>Tap to pick photos &amp; videos</h3>
+      <p>JPEG, PNG, WebP, MP4, MOV · drag &amp; drop also works</p>
+      <input type="file" id="fileInput" multiple accept="image/*,video/*">
+    </div>
+    <div class="queue" id="queue"></div>
+    <div class="upload-actions" id="uploadActions" style="display:none">
+      <button class="btn btn-green" onclick="uploadAll()">⬆️ Upload all</button>
+      <button class="btn btn-outline" onclick="clearQueue()">✕ Clear</button>
+    </div>
+    <div style="margin-top:32px;padding-top:24px;border-top:2px solid #e2e8f0">
+      <div class="manage-bar">
+        <span class="section-title" style="margin:0">Your Photos</span>
+        <span class="manage-count" id="manageCount"></span>
+        <button class="btn btn-danger" id="deleteBtn" style="display:none" onclick="deleteSelected()">🗑 Delete selected</button>
+      </div>
+      <div class="photo-grid" id="manageGrid"><div class="loading-msg">Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- Change PIN -->
+  <div id="tab-pin" class="tab-panel">
+    <div class="pin-card">
+      <h3>🔑 Change your PIN</h3>
+      <p>Enter your current PIN to confirm, then choose a new 4-digit PIN. You'll use it every time you open this admin page.</p>
+
+      <div class="pin-label">Current PIN</div>
+      <div class="pin-row-sm" id="curPinRow">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+      </div>
+
+      <div class="pin-label">New PIN</div>
+      <div class="pin-row-sm" id="newPinRow">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+      </div>
+
+      <div class="pin-label">Confirm new PIN</div>
+      <div class="pin-row-sm" id="cnfPinRow">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+      </div>
+
+      <button class="btn btn-sun" onclick="changePin()" style="margin-top:8px">Save new PIN</button>
+      <div class="pin-msg" id="pinChangeMsg"></div>
+    </div>
+  </div>
+
+  <!-- Before & After -->
+  <div id="tab-ba" class="tab-panel">
+    <div class="section-title">Upload Before &amp; After Pair</div>
+    <div class="section-hint">Each slider on your site needs one before photo and one after photo. Name the project, then pick both photos and upload.</div>
+
+    <div class="ba-input-row">
+      <div class="ba-field">
+        <label>Project Name</label>
+        <input type="text" id="baProjectName" placeholder="e.g. Kitchen Remodel" oninput="updateBaSlug()">
+        <div class="slug-preview" id="baSlugPreview"></div>
+      </div>
+      <div class="ba-field-sm">
+        <label>Duration <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <input type="text" id="baDuration" placeholder="e.g. 3 weeks">
+      </div>
+    </div>
+
+    <div class="ba-pair-row">
+      <div class="ba-drop" id="baBeforeDrop" onclick="document.getElementById('baBeforeInput').click()" ondragover="baDragOver(event,'baBeforeDrop')" ondragleave="baDragLeave('baBeforeDrop')" ondrop="baDrop(event,'before')">
+        <img class="preview" id="baBeforePreview" alt="before preview">
+        <h4>BEFORE</h4>
+        <p id="baBeforeLabel">Tap to pick photo</p>
+        <input type="file" id="baBeforeInput" accept="image/*" style="display:none" onchange="baFileChosen(this,'before')">
+      </div>
+      <div class="ba-drop" id="baAfterDrop" onclick="document.getElementById('baAfterInput').click()" ondragover="baDragOver(event,'baAfterDrop')" ondragleave="baDragLeave('baAfterDrop')" ondrop="baDrop(event,'after')">
+        <img class="preview" id="baAfterPreview" alt="after preview">
+        <h4>AFTER</h4>
+        <p id="baAfterLabel">Tap to pick photo</p>
+        <input type="file" id="baAfterInput" accept="image/*" style="display:none" onchange="baFileChosen(this,'after')">
+      </div>
+    </div>
+
+    <div class="upload-actions">
+      <button class="btn btn-green" onclick="uploadBAPair()">⬆️ Upload Pair</button>
+      <button class="btn btn-outline" onclick="clearBAPair()">✕ Clear</button>
+    </div>
+    <div id="baUploadMsg" style="margin-top:14px;font-size:.88rem;min-height:1.2em"></div>
+
+    <div class="ba-projects-section">
+      <div class="ba-projects-title">Existing Projects</div>
+      <div id="baProjects"><div class="loading-msg">Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div id="tab-stats" class="tab-panel">
+    <iframe id="stats-frame"
+      data-src="https://ultraflow-builder.azurewebsites.net/client-stats?site=jethrokimathi&token="
+      src="about:blank"
+      style="width:100%;min-height:700px;border:none;border-radius:12px;display:block"
+      scrolling="auto">
+    </iframe>
+  </div>
+
+  <!-- Blog -->
+  <div id="tab-blog" class="tab-panel">
+    <div id="blog-list-view">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+        <div>
+          <div class="section-title">Blog Posts</div>
+          <div class="section-hint" style="margin:0" id="blog-count"></div>
+        </div>
+        <button class="btn btn-sun" onclick="openNewPost()">+ New Post</button>
+      </div>
+      <div id="blog-posts-list" class="blog-posts-list"><div class="loading-msg">Loading…</div></div>
+    </div>
+    <div id="blog-editor-view" style="display:none">
+      <button class="blog-back" onclick="showBlogList()">← All posts</button>
+      <div class="blog-editor">
+        <input type="hidden" id="blog-editing-id">
+        <div class="blog-row">
+          <div class="blog-field" style="flex:2">
+            <label>Title *</label>
+            <input type="text" id="blog-title" placeholder="Post title…" oninput="autoSlug()">
+          </div>
+          <div class="blog-field">
+            <label>Category</label>
+            <select id="blog-category"></select>
+          </div>
+        </div>
+        <div class="blog-row">
+          <div class="blog-field">
+            <label>Slug (URL path)</label>
+            <input type="text" id="blog-slug" placeholder="auto-generated">
+          </div>
+          <div class="blog-field">
+            <label>Date</label>
+            <input type="date" id="blog-date">
+          </div>
+        </div>
+        <div class="blog-field">
+          <label>Summary</label>
+          <input type="text" id="blog-summary" placeholder="One or two sentences…">
+        </div>
+        <div class="blog-field">
+          <label>Featured Image URL</label>
+          <input type="url" id="blog-image" placeholder="https://…">
+        </div>
+        <div class="blog-field">
+          <label>Body (HTML)</label>
+          <textarea id="blog-body" placeholder="&lt;p&gt;Write your post here…&lt;/p&gt;"></textarea>
+        </div>
+        <div class="blog-actions">
+          <button class="btn btn-green" onclick="savePost('published')">✓ Publish</button>
+          <button class="btn btn-outline" onclick="savePost('draft')">Save Draft</button>
+          <button class="btn btn-danger" id="blog-delete-btn" onclick="deleteCurrentPost()" style="display:none">🗑 Delete</button>
+        </div>
+        <div id="blog-save-msg" style="margin-top:12px;font-size:.88rem;min-height:1.2em"></div>
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- APP -->
-<div class="app" id="app">
-  <div class="topbar">
-    <div class="topbar-left"><div class="mark">JK</div> Admin</div>
-    <div class="topbar-right">
-      <span class="save-s" id="save-s"></span>
-      <button class="btn btn-ghost btn-sm" onclick="window.open('/','_blank')">↗ View site</button>
-      <button class="btn btn-ghost btn-sm" onclick="doLogout()">Log out</button>
-    </div>
-  </div>
-  <div class="body">
-    <div class="sidebar">
-      <div class="nav-section">Content</div>
-      <div class="nav-item active" data-p="dashboard" onclick="nav(this)">📊 Dashboard</div>
-      <div class="nav-item" data-p="posts" onclick="nav(this)">✍ Blog Posts</div>
-      <div class="nav-section">Site</div>
-      <div class="nav-item" data-p="settings" onclick="nav(this)">⚙️ Settings</div>
-      <div class="nav-item" data-p="photos" onclick="nav(this)">🖼 Photos</div>
-      <div class="nav-item" data-p="connection" onclick="nav(this)">🔗 Connection</div>
-    </div>
-    <div class="content">
-
-      <!-- DASHBOARD -->
-      <div class="panel active" id="panel-dashboard">
-        <div class="ph"><h2>Dashboard</h2><button class="btn btn-primary" onclick="goNewPost()">+ New Post</button></div>
-        <div class="stats">
-          <div class="stat"><div class="stat-v" id="s-pub">—</div><div class="stat-l">Published</div></div>
-          <div class="stat"><div class="stat-v" id="s-dft">—</div><div class="stat-l">Drafts</div></div>
-          <div class="stat"><div class="stat-v" id="s-tot">—</div><div class="stat-l">Total posts</div></div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--b2);border-radius:14px;padding:18px 20px">
-          <div style="font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Recent Posts</div>
-          <div id="dash-recent"></div>
-        </div>
-      </div>
-
-      <!-- POSTS + EDITOR -->
-      <div class="panel" id="panel-posts">
-        <div id="posts-list">
-          <div class="ph"><h2>Blog Posts</h2><button class="btn btn-primary" onclick="showEditor()">+ New Post</button></div>
-          <table class="tbl"><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th></th></tr></thead>
-          <tbody id="posts-tbody"></tbody></table>
-        </div>
-        <div id="post-editor" style="display:none;max-width:780px">
-          <div class="editor-back" onclick="hideEditor()">← Back to posts</div>
-          <h2 id="ed-heading" style="margin-bottom:18px;font-size:1.2rem;font-weight:800">New Post</h2>
-          <div class="fg"><label>Title *</label><input id="ed-title" placeholder="When Faith Meets the Field…"></div>
-          <div class="frow">
-            <div class="fg"><label>Category</label>
-              <select id="ed-cat"><option>Ministry</option><option>Agribusiness</option><option>Entrepreneurship</option><option>Personal</option></select>
-            </div>
-            <div class="fg"><label>Status</label>
-              <select id="ed-status"><option value="draft">Draft</option><option value="published">Published</option></select>
-            </div>
-          </div>
-          <div class="fg"><label>Excerpt</label><input id="ed-excerpt" placeholder="Short 1–2 sentence summary for blog listing…"></div>
-          <div class="fg"><label>Cover Image URL</label><input type="url" id="ed-cover" placeholder="/assets/photos/photo.jpg or https://…"></div>
-          <div class="fg">
-            <label>Body (HTML)</label>
-            <textarea class="mono" id="ed-body" rows="16" placeholder="&lt;p&gt;Your post content here…&lt;/p&gt;"></textarea>
-            <div class="hint">Tip: use &lt;h2&gt; &lt;p&gt; &lt;blockquote&gt; &lt;ul&gt; &lt;strong&gt; &lt;em&gt; tags</div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px">
-            <button class="btn btn-primary" onclick="savePost()">Save Post</button>
-            <button class="btn btn-ghost" onclick="hideEditor()">Cancel</button>
-            <button id="del-btn" class="btn btn-danger btn-sm" style="display:none;margin-left:auto" onclick="deletePost()">Delete</button>
-          </div>
-          <div id="ed-msg" style="font-size:.8rem;margin-top:10px;display:none"></div>
-        </div>
-      </div>
-
-      <!-- SETTINGS -->
-      <div class="panel" id="panel-settings">
-        <div class="ph"><h2>Site Settings</h2><button class="btn btn-primary" onclick="saveSettings()">Save</button></div>
-        <div class="scard"><h3>Contact Info</h3>
-          <div class="frow">
-            <div class="fg"><label>Email</label><input type="email" id="s-email" placeholder="jethro@example.com"></div>
-            <div class="fg"><label>WhatsApp (with country code)</label><input type="tel" id="s-whatsapp" placeholder="+254712345678"></div>
-          </div>
-        </div>
-        <div class="scard"><h3>Social Media</h3>
-          <div class="frow">
-            <div class="fg"><label>Facebook</label><input type="url" id="s-facebook"></div>
-            <div class="fg"><label>Instagram</label><input type="url" id="s-instagram"></div>
-          </div>
-          <div class="frow">
-            <div class="fg"><label>YouTube</label><input type="url" id="s-youtube"></div>
-            <div class="fg"><label>LinkedIn</label><input type="url" id="s-linkedin"></div>
-          </div>
-          <div class="frow">
-            <div class="fg"><label>X / Twitter</label><input type="url" id="s-twitter"></div>
-            <div class="fg"></div>
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
-        <div id="sett-msg" style="font-size:.78rem;margin-top:10px;display:none"></div>
-      </div>
-
-      <!-- PHOTOS -->
-      <div class="panel" id="panel-photos">
-        <div class="ph"><h2>Photos</h2><button class="btn btn-primary" onclick="savePhotos()">Save</button></div>
-        <div class="scard">
-          <h3>Section Photos</h3>
-          <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">Paste a URL or a local path like <code>/assets/photos/filename.jpg</code></p>
-          <div class="fg"><label>Hero background</label><input type="url" id="p-hero" placeholder="/assets/photos/jethro-2-web.jpg"></div>
-          <div class="fg"><label>About section portrait</label><input type="url" id="p-about" placeholder="/assets/photos/jethro-portrait-web.jpg"></div>
-          <div class="fg"><label>Ministry section</label><input type="url" id="p-ministry" placeholder="https://…"></div>
-          <div class="frow">
-            <div class="fg"><label>Agribusiness card 1</label><input type="url" id="p-agri1"></div>
-            <div class="fg"><label>Agribusiness card 2</label><input type="url" id="p-agri2"></div>
-          </div>
-          <div class="fg" style="max-width:380px"><label>Agribusiness card 3</label><input type="url" id="p-agri3"></div>
-        </div>
-        <div class="scard">
-          <h3>Uploaded Photos</h3>
-          <div class="photo-grid" id="photo-grid"></div>
-          <p style="font-size:.73rem;color:var(--muted);margin-top:12px">To add a photo: put it in <code>public/assets/photos/</code> and redeploy with <code>az storage blob upload-batch</code>.</p>
-        </div>
-        <button class="btn btn-primary" onclick="savePhotos()">Save Photo Settings</button>
-        <div id="photo-msg" style="font-size:.78rem;margin-top:10px;display:none"></div>
-      </div>
-
-      <!-- CONNECTION -->
-      <div class="panel" id="panel-connection">
-        <div class="ph"><h2>Storage Connection</h2></div>
-        <div class="scard">
-          <h3>Azure Blob Storage SAS</h3>
-          <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px">Posts and settings are saved directly to blob storage using this SAS token. Stored only in your browser.</p>
-          <div class="fg"><label>Storage base URL</label><input type="url" id="c-url"></div>
-          <div class="fg"><label>SAS token</label><input type="text" id="c-sas"></div>
-          <div style="display:flex;gap:10px;margin-top:4px">
-            <button class="btn btn-primary" onclick="updateConn()">Update</button>
-            <button class="btn btn-danger" onclick="resetAll()">Reset &amp; log out</button>
-          </div>
-          <div id="conn-msg" style="font-size:.78rem;margin-top:10px;display:none"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
 
 <script>
-// Default password hash = SHA-256 of "JK2026!" — change via browser console:
-// localStorage.setItem('jk_pass_hash', await crypto.subtle.digest('SHA-256',new TextEncoder().encode('newpass')).then(b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')))
-const DEFAULT_HASH = 'b1a0d9f6e8c23a14f5d7b9e01c2345678901234567890123456789012345678'; // placeholder — replaced below
+// ── Config (filled at deploy time) ──────────────────────────────────────────
+var SA           = 'jethrokimathi';
+var CONTAINER    = '$web';
+var SAS_TOKEN    = 'se=2028-06-05T14%3A00Z&sp=rwdlac&spr=https&sv=2022-11-02&ss=b&srt=sco&sig=Wj6bx5ZbPER6ur2lTifJ4qAERKI4y2ro6a3R0udLM54%3D';
+var CONTAINER_BA = 'before-after';
+var SAS_TOKEN_BA = '';
+var PREFIX       = 'gallery/';
+var ADMIN_PIN    = '2026';
+var SESSION_KEY  = 'jk-admin-session'; // unique per site so sessions don't cross
+var SITE_ID          = 'jethrokimathi';
+var ANALYTICS_TOKEN  = '';
+var ANALYTICS_API    = 'https://ultraflow-builder.azurewebsites.net/api/client-events';
+var HAS_BA           = ('false' === 'true');   // true/false — hide Before & After tab if client has none
+var HAS_ANALYTICS    = ('false' === 'true'); // true/false — hide Stats tab for non-analytics-tier clients
+var HAS_BLOG         = ('true' === 'true');       // true/false — show Blog management tab
+var BLOG_READ_BASE   = 'https://jethrokimathi.z13.web.core.windows.net';              // base URL for reading posts.json (static site, no auth)
+var BLOG_WRITE_URL   = 'https://jethrokimathi.blob.core.windows.net/$web';              // blob REST API base URL for writing JSON
+var SAS_TOKEN_BLOG   = 'se=2028-06-05T14%3A00Z&sp=rwdlac&spr=https&sv=2022-11-02&ss=b&srt=sco&sig=Wj6bx5ZbPER6ur2lTifJ4qAERKI4y2ro6a3R0udLM54%3D';              // SAS token for blog write container
+var BLOG_CATEGORIES  = 'Ministry,Agribusiness,Entrepreneurship,Personal';             // comma-separated list e.g. 'News,Events,Tips'
 
-let storageUrl = localStorage.getItem('jk_storage_url') || '';
-let storageSas = localStorage.getItem('jk_storage_sas') || '';
-let isAuthed   = sessionStorage.getItem('jk_authed') === '1';
-let posts = [], settings = {}, editingSlug = null;
+// ── PIN helpers ──────────────────────────────────────────────────────────────
+var CONFIG_URL = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER + '/gallery-config.json?' + SAS_TOKEN;
 
-async function sha256(s) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+async function sha256hex(str) {
+  var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
 }
 
-// Default password is "JK2026!" — stored hash computed below on first load
-async function ensureDefaultHash() {
-  if (!localStorage.getItem('jk_pass_hash')) {
-    localStorage.setItem('jk_pass_hash', await sha256('JK2026!'));
-  }
+async function loadPinHash() {
+  try {
+    var r = await fetch(CONFIG_URL + '&t=' + Date.now());
+    if (!r.ok) return null;
+    var cfg = await r.json();
+    return cfg.pinHash || null;
+  } catch(e) { return null; }
 }
 
-function showScreen(id) {
-  document.getElementById('screen-login').classList.remove('active');
-  document.getElementById('screen-setup').classList.remove('active');
-  document.getElementById('app').classList.remove('active');
-  if (id === 'app') document.getElementById('app').classList.add('active');
-  else document.getElementById(id).classList.add('active');
-}
-
-// Pre-configured storage — no setup screen needed
-const _PRESET_URL = 'https://jethrokimathi.blob.core.windows.net/$web';
-const _PRESET_SAS = 'se=2028-06-05T14%3A02Z&sp=rwc&spr=https&sv=2022-11-02&ss=b&srt=o&sig=tNP1MuqCKJlJ%2BsO/cLYmDRZELB70tUfJ9aDcaVyIfHU%3D';
-
-async function init() {
-  await ensureDefaultHash();
-  // Auto-configure storage on first load
-  if (!storageUrl) { localStorage.setItem('jk_storage_url', _PRESET_URL); storageUrl = _PRESET_URL; }
-  if (!storageSas) { localStorage.setItem('jk_storage_sas', _PRESET_SAS); storageSas = _PRESET_SAS; }
-  if (!isAuthed) { showScreen('screen-login'); return; }
-  startApp();
-}
-
-async function doLogin() {
-  const pw = document.getElementById('login-pw').value;
-  const err = document.getElementById('login-err');
-  err.style.display = 'none';
-  const h = await sha256(pw);
-  if (h !== localStorage.getItem('jk_pass_hash')) {
-    err.textContent = 'Incorrect password.'; err.style.display = 'block'; return;
-  }
-  sessionStorage.setItem('jk_authed','1'); isAuthed = true;
-  if (!storageUrl || !storageSas) { showScreen('screen-setup'); return; }
-  startApp();
-}
-document.getElementById('login-pw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-
-function doLogout() { sessionStorage.removeItem('jk_authed'); location.reload(); }
-
-function saveSetup() {
-  const url = document.getElementById('setup-url').value.trim().replace(/\/$/,'');
-  const sas = document.getElementById('setup-sas').value.trim().replace(/^\?/,'');
-  const err = document.getElementById('setup-err');
-  if (!url || !sas) { err.textContent='Both fields required.'; err.style.display='block'; return; }
-  localStorage.setItem('jk_storage_url', url);
-  localStorage.setItem('jk_storage_sas', sas);
-  storageUrl = url; storageSas = sas;
-  startApp();
-}
-
-function resetAll() {
-  ['jk_storage_url','jk_storage_sas'].forEach(k => localStorage.removeItem(k));
-  sessionStorage.removeItem('jk_authed');
-  location.reload();
-}
-
-function updateConn() {
-  const url = document.getElementById('c-url').value.trim().replace(/\/$/,'');
-  const sas = document.getElementById('c-sas').value.trim().replace(/^\?/,'');
-  const msg = document.getElementById('conn-msg');
-  if (!url || !sas) { msg.style.display='block'; msg.style.color='#fca5a5'; msg.textContent='Both fields required.'; return; }
-  localStorage.setItem('jk_storage_url', url);
-  localStorage.setItem('jk_storage_sas', sas);
-  storageUrl = url; storageSas = sas;
-  msg.style.display='block'; msg.style.color='#6ee7b7'; msg.textContent='✓ Updated.';
-  toast('Connection updated ✓');
-}
-
-// Blob read (public static URL, no auth)
-async function readBlob(file) {
-  const res = await fetch(`/${file}?_=${Date.now()}`);
-  if (!res.ok) return null;
-  return res.json();
-}
-
-// Blob write (uses SAS token)
-async function writeBlob(file, data) {
-  const res = await fetch(`${storageUrl}/${file}?${storageSas}`, {
+async function savePinHash(hash) {
+  var body = JSON.stringify({ pinHash: hash });
+  var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER + '/gallery-config.json?' + SAS_TOKEN;
+  var r = await fetch(url, {
     method: 'PUT',
-    headers: { 'x-ms-blob-type':'BlockBlob', 'Content-Type':'application/json' },
-    body: JSON.stringify(data, null, 2),
+    headers: { 'x-ms-blob-type': 'BlockBlob', 'Content-Type': 'application/json', 'x-ms-blob-cache-control': 'no-store' },
+    body: body
   });
-  if (!res.ok) { const t=await res.text(); throw new Error(`${res.status}: ${t.slice(0,160)}`); }
+  return r.ok || r.status === 201;
 }
 
-function setSave(s) {
-  const el = document.getElementById('save-s');
-  el.className = 'save-s ' + s;
-  el.textContent = s==='saving'?'● Saving…':s==='saved'?'✓ Saved':'';
-  if (s==='saved') setTimeout(()=>{ if(el.textContent==='✓ Saved') el.textContent=''; },3000);
+// ── Lock screen ──────────────────────────────────────────────────────────────
+var lockDigits = document.querySelectorAll('#pinRow .pin-digit');
+lockDigits.forEach(function(d, i){
+  d.addEventListener('input', function(){
+    d.value = d.value.replace(/[^0-9]/g,'').slice(-1);
+    if (d.value && i < lockDigits.length - 1) lockDigits[i+1].focus();
+    if (i === lockDigits.length - 1 && d.value) verifyLock();
+  });
+  d.addEventListener('keydown', function(e){
+    if (e.key === 'Backspace' && !d.value && i > 0) { lockDigits[i-1].focus(); lockDigits[i-1].value = ''; }
+  });
+});
+
+function getLockPin() { return Array.from(lockDigits).map(function(d){ return d.value; }).join(''); }
+
+async function verifyLock() {
+  var entered = getLockPin();
+  if (entered === ADMIN_PIN) { unlock(); return; }
+  var storedHash = await loadPinHash();
+  var enteredHash = await sha256hex(entered);
+  if (storedHash === null || enteredHash === storedHash) { unlock(); return; }
+  document.getElementById('pinError').textContent = 'Incorrect PIN — try again';
+  lockDigits.forEach(function(d){ d.value = ''; });
+  lockDigits[0].focus();
+  setTimeout(function(){ document.getElementById('pinError').textContent = ''; }, 2000);
 }
 
-async function startApp() {
-  showScreen('app');
-  document.getElementById('c-url').value = storageUrl;
-  document.getElementById('c-sas').value = storageSas;
-  [posts, settings] = await Promise.all([readBlob('posts.json'), readBlob('settings.json')]);
-  posts = posts || []; settings = settings || {};
-  populateSettings();
-  renderDashboard();
+function unlock() {
+  sessionStorage.setItem(SESSION_KEY, '1');
+  document.getElementById('lockScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadGallery();
 }
 
-function nav(el) {
-  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('panel-'+el.dataset.p).classList.add('active');
-  if (el.dataset.p==='posts') renderPostsTable();
-  if (el.dataset.p==='photos') { populateSettings(); renderPhotoGrid(); }
+function lockApp() {
+  sessionStorage.removeItem(SESSION_KEY);
+  lockDigits.forEach(function(d){ d.value = ''; });
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('lockScreen').style.display = 'flex';
+  lockDigits[0].focus();
 }
 
-function goNewPost() { nav(document.querySelector('[data-p="posts"]')); showEditor(); }
+// Apply lock only in production when a real PIN is configured and no session exists
+if (ADMIN_PIN && sessionStorage.getItem(SESSION_KEY) !== '1') lockApp();
+else { sessionStorage.setItem(SESSION_KEY, '1'); loadGallery(); }
 
-let toastTimer;
-function toast(msg, type='ok') {
-  const t = document.getElementById('toast');
-  t.textContent=msg; t.className=`toast ${type} show`;
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+// Hide Before & After tab if this site doesn't use it
+if (!HAS_BA) {
+  var _baBtn = document.getElementById('tab-btn-ba');
+  if (_baBtn) _baBtn.style.display = 'none';
+  var _baPanel = document.getElementById('tab-ba');
+  if (_baPanel) _baPanel.style.display = 'none';
 }
 
-function renderDashboard() {
-  const pub = posts.filter(p=>p.status==='published');
-  const dft = posts.filter(p=>p.status==='draft');
-  document.getElementById('s-pub').textContent = pub.length;
-  document.getElementById('s-dft').textContent = dft.length;
-  document.getElementById('s-tot').textContent = posts.length;
-  const recent = [...posts].sort((a,b)=>new Date(b.publishedAt)-new Date(a.publishedAt)).slice(0,5);
-  const el = document.getElementById('dash-recent');
-  if (!recent.length) { el.innerHTML='<div style="color:var(--muted);font-size:.83rem;padding:6px 0">No posts yet. <span style="color:var(--em-lt);cursor:pointer" onclick="goNewPost()">Create your first →</span></div>'; return; }
-  el.innerHTML = recent.map(p=>{
-    const d=new Date(p.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--b2)">
-      <div><div style="font-weight:600;font-size:.87rem">${esc(p.title)}</div><div style="font-size:.7rem;color:var(--muted)">${esc(p.category)} · ${d}</div></div>
-      <div style="display:flex;gap:7px;align-items:center"><span class="pill pill-${p.status}">${p.status}</span>
-        <button class="btn btn-ghost btn-xs" onclick="nav(document.querySelector('[data-p=posts]'));editPost('${esc(p.slug)}')">Edit</button></div>
-    </div>`;
-  }).join('');
+// Hide Stats tab if client is not on analytics tier
+if (!HAS_ANALYTICS) {
+  var _statsBtn = document.querySelector('.tab-btn[onclick*="stats"]');
+  if (_statsBtn) _statsBtn.style.display = 'none';
+  var _statsPanel = document.getElementById('tab-stats');
+  if (_statsPanel) _statsPanel.style.display = 'none';
 }
 
-function renderPostsTable() {
-  const tb = document.getElementById('posts-tbody');
-  if (!posts.length) { tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--muted)">No posts yet. <span style="color:var(--em-lt);cursor:pointer" onclick="showEditor()">Create your first →</span></td></tr>`; return; }
-  tb.innerHTML = [...posts].sort((a,b)=>new Date(b.publishedAt)-new Date(a.publishedAt)).map(p=>{
-    const d=new Date(p.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-    return `<tr>
-      <td style="font-weight:600;max-width:220px">${esc(p.title)}<div style="font-size:.7rem;color:var(--muted)">?slug=${esc(p.slug)}</div></td>
-      <td style="color:var(--muted);font-size:.82rem">${esc(p.category)}</td>
-      <td><span class="pill pill-${p.status}">${p.status}</span></td>
-      <td style="font-size:.78rem;color:var(--muted)">${d}</td>
-      <td><div style="display:flex;gap:5px">
-        <button class="btn btn-ghost btn-xs" onclick="editPost('${esc(p.slug)}')">Edit</button>
-        <a class="btn btn-ghost btn-xs" href="/blog/post.html?slug=${esc(p.slug)}" target="_blank">View</a>
-      </div></td></tr>`;
-  }).join('');
+// Hide Blog tab if client has no blog
+if (!HAS_BLOG) {
+  var _blogBtn = document.getElementById('tab-btn-blog');
+  if (_blogBtn) _blogBtn.style.display = 'none';
+  var _blogPanel = document.getElementById('tab-blog');
+  if (_blogPanel) _blogPanel.style.display = 'none';
 }
 
-function showEditor(post) {
-  document.getElementById('posts-list').style.display='none';
-  document.getElementById('post-editor').style.display='block';
-  document.getElementById('ed-msg').style.display='none';
-  if (post) {
-    editingSlug=post.slug;
-    document.getElementById('ed-heading').textContent='Edit Post';
-    document.getElementById('ed-title').value=post.title||'';
-    document.getElementById('ed-cat').value=post.category||'Ministry';
-    document.getElementById('ed-status').value=post.status||'draft';
-    document.getElementById('ed-excerpt').value=post.excerpt||'';
-    document.getElementById('ed-cover').value=post.coverImage||'';
-    document.getElementById('ed-body').value=post.body||'';
-    document.getElementById('del-btn').style.display='inline-flex';
-  } else {
-    editingSlug=null;
-    document.getElementById('ed-heading').textContent='New Post';
-    ['ed-title','ed-excerpt','ed-cover','ed-body'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('ed-cat').value='Ministry';
-    document.getElementById('ed-status').value='draft';
-    document.getElementById('del-btn').style.display='none';
+// Populate blog category select
+if (HAS_BLOG && BLOG_CATEGORIES) {
+  var _blogCatSel = document.getElementById('blog-category');
+  if (_blogCatSel) BLOG_CATEGORIES.split(',').forEach(function(cat){
+    var o = document.createElement('option'); o.value = cat.trim(); o.textContent = cat.trim();
+    _blogCatSel.appendChild(o);
+  });
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'upload') loadGallery();
+  if (name === 'stats') {
+    var frame = document.getElementById('stats-frame');
+    if (frame && !frame.src.includes('client-stats')) { frame.src = frame.dataset.src; }
   }
 }
 
-function hideEditor() {
-  document.getElementById('post-editor').style.display='none';
-  document.getElementById('posts-list').style.display='block';
-  renderPostsTable(); editingSlug=null;
+// ── Upload ───────────────────────────────────────────────────────────────────
+var fileQueue = [];
+var dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', function(){ dz.classList.remove('over'); });
+dz.addEventListener('drop', function(e){ e.preventDefault(); dz.classList.remove('over'); addFiles(e.dataTransfer.files); });
+document.getElementById('fileInput').addEventListener('change', function(){ addFiles(this.files); this.value = ''; });
+
+function addFiles(files) {
+  Array.from(files).forEach(function(f){
+    if (f.size > 50 * 1024 * 1024) { alert(f.name + ' is over 50 MB — skipped'); return; }
+    fileQueue.push({ file: f, status: 'waiting' });
+  });
+  renderQueue();
 }
 
-function editPost(slug) { const p=posts.find(x=>x.slug===slug); if(p) showEditor(p); }
+function renderQueue() {
+  var q = document.getElementById('queue');
+  var actions = document.getElementById('uploadActions');
+  if (!fileQueue.length) { q.innerHTML = ''; actions.style.display = 'none'; return; }
+  actions.style.display = 'flex';
+  q.innerHTML = '';
+  fileQueue.forEach(function(item, idx){
+    var isVideo = item.file.type.startsWith('video/');
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    var thumbHtml = isVideo
+      ? '<div class="q-thumb" style="display:flex;align-items:center;justify-content:center;font-size:1.6rem">🎬</div>'
+      : '<img class="q-thumb" src="' + URL.createObjectURL(item.file) + '" alt="">';
+    div.innerHTML = thumbHtml
+      + '<div class="q-info"><div class="q-name">' + item.file.name + '</div>'
+      + '<div class="q-size">' + (item.file.size/1024/1024).toFixed(1) + ' MB</div>'
+      + '<div class="progress-bar"><div class="progress-fill" id="pf' + idx + '"></div></div></div>'
+      + '<span class="q-status ' + item.status + '" id="qs' + idx + '">' + item.status + '</span>';
+    q.appendChild(div);
+  });
+}
 
-async function savePost() {
-  const msg=document.getElementById('ed-msg');
-  const title=document.getElementById('ed-title').value.trim();
-  const body=document.getElementById('ed-body').value.trim();
-  if (!title||!body) { msg.style.display='block'; msg.style.color='#fca5a5'; msg.textContent='Title and body are required.'; return; }
-  msg.style.display='none';
-  if (editingSlug) {
-    const idx=posts.findIndex(p=>p.slug===editingSlug);
-    if (idx>=0) posts[idx]={...posts[idx],title,body,excerpt:document.getElementById('ed-excerpt').value.trim(),coverImage:document.getElementById('ed-cover').value.trim(),category:document.getElementById('ed-cat').value,status:document.getElementById('ed-status').value,updatedAt:new Date().toISOString()};
+function uploadAll() {
+  var pending = fileQueue.filter(function(i){ return i.status === 'waiting' || i.status === 'error'; });
+  if (!pending.length) { alert('Nothing to upload.'); return; }
+  var chain = Promise.resolve();
+  fileQueue.forEach(function(item, idx){
+    if (item.status !== 'waiting' && item.status !== 'error') return;
+    chain = chain.then(function(){ return uploadOne(item, idx); });
+  });
+  chain.then(function(){
+    setTimeout(function(){
+      if (fileQueue.every(function(i){ return i.status === 'done'; })) { clearQueue(); loadGallery(); }
+    }, 1500);
+  });
+}
+
+function uploadOne(item, idx) {
+  item.status = 'uploading'; setQStatus(idx, 'uploading', 'uploading…');
+  var ext = item.file.name.split('.').pop();
+  var blobName = PREFIX + Date.now() + '_' + idx + '.' + ext;
+  var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER + '/' + blobName + '?' + SAS_TOKEN;
+  return new Promise(function(resolve){
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
+    xhr.setRequestHeader('Content-Type', item.file.type || 'application/octet-stream');
+    xhr.upload.onprogress = function(e){
+      if (e.lengthComputable) {
+        var pf = document.getElementById('pf' + idx);
+        if (pf) pf.style.width = Math.round(e.loaded/e.total*100) + '%';
+      }
+    };
+    xhr.onload = function(){
+      item.status = xhr.status === 201 ? 'done' : 'error';
+      setQStatus(idx, item.status, xhr.status === 201 ? '✓ Done' : 'Error ' + xhr.status);
+      resolve();
+    };
+    xhr.onerror = function(){ item.status = 'error'; setQStatus(idx, 'error', 'Network error'); resolve(); };
+    xhr.send(item.file);
+  });
+}
+
+function setQStatus(idx, cls, text) {
+  var el = document.getElementById('qs' + idx);
+  if (el) { el.className = 'q-status ' + cls; el.textContent = text; }
+}
+function clearQueue() { fileQueue = []; renderQueue(); }
+
+// ── Manage gallery ───────────────────────────────────────────────────────────
+var selected = {};
+
+function loadGallery() {
+  var grid = document.getElementById('manageGrid');
+  var count = document.getElementById('manageCount');
+  grid.innerHTML = '<div class="loading-msg">Loading…</div>';
+  selected = {}; updateDeleteBtn();
+  var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER
+    + '?restype=container&comp=list&prefix=' + encodeURIComponent(PREFIX) + '&' + SAS_TOKEN;
+  fetch(url)
+    .then(function(r){ return r.text(); })
+    .then(function(xml){
+      var doc = new DOMParser().parseFromString(xml, 'application/xml');
+      var blobs = Array.from(doc.querySelectorAll('Blob')).filter(function(b){
+        var n = b.querySelector('Name').textContent;
+        return n !== PREFIX; // skip directory marker
+      });
+      blobs.sort(function(a,b){
+        return new Date(b.querySelector('Last-Modified').textContent)
+             - new Date(a.querySelector('Last-Modified').textContent);
+      });
+      count.textContent = blobs.length + ' photo' + (blobs.length !== 1 ? 's' : '') + ' in gallery';
+      if (!blobs.length) { grid.innerHTML = '<div class="loading-msg">No photos yet — upload some!</div>'; return; }
+      grid.innerHTML = '';
+      blobs.forEach(function(blob){
+        var name = blob.querySelector('Name').textContent;
+        var ext = name.split('.').pop().toLowerCase();
+        var fileUrl = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER + '/' + name + '?' + SAS_TOKEN;
+        var isVideo = ['mp4','mov','webm'].includes(ext);
+        var div = document.createElement('div');
+        div.className = 'm-item';
+        div.dataset.name = name;
+        var media = isVideo
+          ? '<video src="'+fileUrl+'" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>'
+          : '<img src="'+fileUrl+'" alt="" loading="lazy">';
+        div.innerHTML = media + '<div class="sel-overlay">✓</div><div class="m-name">'+name.replace(PREFIX,'')+'</div>';
+        div.addEventListener('click', function(){
+          if (selected[name]) { delete selected[name]; div.classList.remove('selected'); }
+          else { selected[name] = true; div.classList.add('selected'); }
+          updateDeleteBtn();
+        });
+        grid.appendChild(div);
+      });
+    })
+    .catch(function(){ grid.innerHTML = '<div class="loading-msg">Could not load gallery.</div>'; });
+}
+
+function updateDeleteBtn() {
+  var n = Object.keys(selected).length;
+  var btn = document.getElementById('deleteBtn');
+  btn.style.display = n ? '' : 'none';
+  btn.textContent = '🗑 Delete selected (' + n + ')';
+}
+
+function deleteSelected() {
+  var names = Object.keys(selected);
+  if (!names.length) return;
+  if (!confirm('Delete ' + names.length + ' file(s)? This cannot be undone.')) return;
+  Promise.all(names.map(function(name){
+    var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER + '/' + name + '?' + SAS_TOKEN;
+    return fetch(url, { method: 'DELETE' });
+  })).then(function(){ selected = {}; loadGallery(); });
+}
+
+// ── Change PIN ────────────────────────────────────────────────────────────────
+wireDigitRow('curPinRow');
+wireDigitRow('newPinRow');
+wireDigitRow('cnfPinRow');
+
+function wireDigitRow(rowId) {
+  var inputs = document.querySelectorAll('#' + rowId + ' input');
+  inputs.forEach(function(d, i){
+    d.addEventListener('input', function(){
+      d.value = d.value.replace(/[^0-9]/g,'').slice(-1);
+      if (d.value && i < inputs.length - 1) inputs[i+1].focus();
+    });
+    d.addEventListener('keydown', function(e){
+      if (e.key === 'Backspace' && !d.value && i > 0) { inputs[i-1].focus(); inputs[i-1].value = ''; }
+    });
+  });
+}
+
+function getRowPin(rowId) {
+  return Array.from(document.querySelectorAll('#' + rowId + ' input')).map(function(d){ return d.value; }).join('');
+}
+
+async function changePin() {
+  var msg = document.getElementById('pinChangeMsg');
+  var cur = getRowPin('curPinRow');
+  var nw  = getRowPin('newPinRow');
+  var cnf = getRowPin('cnfPinRow');
+  if (cur.length < 4 || nw.length < 4 || cnf.length < 4) { showPinMsg('Fill in all three PINs.', 'err'); return; }
+  if (nw !== cnf) { showPinMsg('New PINs don\'t match.', 'err'); return; }
+  // Verify current PIN
+  var isAdmin = cur === ADMIN_PIN;
+  var storedHash = await loadPinHash();
+  var curHash = await sha256hex(cur);
+  if (!isAdmin && storedHash !== null && curHash !== storedHash) { showPinMsg('Current PIN is incorrect.', 'err'); return; }
+  // Save new hash
+  var newHash = await sha256hex(nw);
+  var ok = await savePinHash(newHash);
+  if (ok) {
+    showPinMsg('✓ PIN changed successfully!', 'ok');
+    // Clear all rows
+    ['curPinRow','newPinRow','cnfPinRow'].forEach(function(r){
+      document.querySelectorAll('#' + r + ' input').forEach(function(d){ d.value = ''; });
+    });
   } else {
-    let s=slugify(title),f=s,n=2;
-    while(posts.find(p=>p.slug===f)) f=`${s}-${n++}`;
-    posts.push({id:(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)),slug:f,title,body,excerpt:document.getElementById('ed-excerpt').value.trim(),coverImage:document.getElementById('ed-cover').value.trim(),category:document.getElementById('ed-cat').value,status:document.getElementById('ed-status').value,publishedAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
+    showPinMsg('Failed to save — check connection.', 'err');
   }
-  try { setSave('saving'); await writeBlob('posts.json',posts); setSave('saved'); toast(editingSlug?'Post updated ✓':'Post created ✓'); renderDashboard(); hideEditor(); }
-  catch(e) { setSave(''); msg.style.display='block'; msg.style.color='#fca5a5'; msg.textContent='Save failed: '+e.message; toast('Save failed','err'); }
 }
 
-async function deletePost() {
-  if (!editingSlug) return;
-  if (!confirm(`Delete "${document.getElementById('ed-title').value}"? Cannot be undone.`)) return;
-  posts=posts.filter(p=>p.slug!==editingSlug);
-  try { setSave('saving'); await writeBlob('posts.json',posts); setSave('saved'); toast('Deleted'); renderDashboard(); hideEditor(); }
-  catch(e) { setSave(''); toast('Delete failed: '+e.message,'err'); }
+function showPinMsg(text, cls) {
+  var el = document.getElementById('pinChangeMsg');
+  el.textContent = text;
+  el.className = 'pin-msg ' + cls;
+  setTimeout(function(){ if (el.textContent === text) el.textContent = ''; }, 4000);
 }
 
-const SKEYS=['email','whatsapp','facebook','instagram','youtube','linkedin','twitter'];
-const PKEYS={heroPhoto:'p-hero',aboutPhoto:'p-about',ministryPhoto:'p-ministry',agriPhoto1:'p-agri1',agriPhoto2:'p-agri2',agriPhoto3:'p-agri3'};
+// ── Before & After ────────────────────────────────────────────────────────────
+var baFiles = { before: null, after: null };
 
-function populateSettings() {
-  SKEYS.forEach(k=>{const el=document.getElementById(`s-${k}`);if(el) el.value=settings[k]||'';});
-  Object.entries(PKEYS).forEach(([k,id])=>{const el=document.getElementById(id);if(el) el.value=settings[k]||'';});
+function slugify(str) {
+  return str.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
-async function saveSettings() {
-  SKEYS.forEach(k=>{const el=document.getElementById(`s-${k}`);if(el) settings[k]=el.value.trim();});
-  try { setSave('saving'); await writeBlob('settings.json',settings); setSave('saved'); toast('Settings saved ✓');
-    const m=document.getElementById('sett-msg'); m.style.display='block'; m.style.color='#6ee7b7'; m.textContent='✓ Saved.'; setTimeout(()=>m.style.display='none',2000); }
-  catch(e) { setSave(''); toast('Failed: '+e.message,'err'); }
+function updateBaSlug() {
+  var slug = slugify(document.getElementById('baProjectName').value);
+  document.getElementById('baSlugPreview').textContent = slug ? 'Filename prefix: ' + slug : '';
 }
 
-async function savePhotos() {
-  Object.entries(PKEYS).forEach(([k,id])=>{const el=document.getElementById(id);if(el) settings[k]=el.value.trim();});
-  try { setSave('saving'); await writeBlob('settings.json',settings); setSave('saved'); toast('Photos saved ✓');
-    const m=document.getElementById('photo-msg'); m.style.display='block'; m.style.color='#6ee7b7'; m.textContent='✓ Saved. Refresh the site to see changes.'; setTimeout(()=>m.style.display='none',3000); }
-  catch(e) { setSave(''); toast('Failed: '+e.message,'err'); }
+function baDragOver(e, dropId) { e.preventDefault(); document.getElementById(dropId).classList.add('over'); }
+function baDragLeave(dropId) { document.getElementById(dropId).classList.remove('over'); }
+function baDrop(e, role) {
+  e.preventDefault();
+  var dropId = role === 'before' ? 'baBeforeDrop' : 'baAfterDrop';
+  document.getElementById(dropId).classList.remove('over');
+  var file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) setBaFile(role, file);
 }
 
-function renderPhotoGrid() {
-  const grid=document.getElementById('photo-grid');
-  const photos=[{label:'Hero bg',url:settings.heroPhoto||'/assets/photos/jethro-2-web.jpg'},{label:'Portrait',url:settings.aboutPhoto||'/assets/photos/jethro-portrait-web.jpg'}];
-  grid.innerHTML=photos.map(p=>`<div class="photo-thumb"><img src="${esc(p.url)}" onerror="this.parentElement.style.display='none'" loading="lazy"><div class="photo-thumb-lbl">${esc(p.label)}</div></div>`).join('');
+function baFileChosen(input, role) {
+  if (input.files[0]) setBaFile(role, input.files[0]);
+  input.value = '';
 }
 
-function slugify(s){return s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function setBaFile(role, file) {
+  baFiles[role] = file;
+  var dropId  = role === 'before' ? 'baBeforeDrop'   : 'baAfterDrop';
+  var prevId  = role === 'before' ? 'baBeforePreview' : 'baAfterPreview';
+  var labelId = role === 'before' ? 'baBeforeLabel'   : 'baAfterLabel';
+  var drop    = document.getElementById(dropId);
+  var prev    = document.getElementById(prevId);
+  prev.src = URL.createObjectURL(file);
+  document.getElementById(labelId).textContent = file.name;
+  drop.classList.add('has-file');
+}
 
-init();
+function clearBAPair() {
+  baFiles = { before: null, after: null };
+  ['baBeforeDrop','baAfterDrop'].forEach(function(id){ document.getElementById(id).classList.remove('has-file'); });
+  ['baBeforePreview','baAfterPreview'].forEach(function(id){ document.getElementById(id).src = ''; });
+  ['baBeforeLabel','baAfterLabel'].forEach(function(id){ document.getElementById(id).textContent = 'Tap to pick photo'; });
+  document.getElementById('baUploadMsg').textContent = '';
+}
+
+function setBaMsg(text, color) {
+  var el = document.getElementById('baUploadMsg');
+  el.textContent = text;
+  el.style.color = color || 'inherit';
+}
+
+async function getNextBaPairNumber(slug) {
+  try {
+    var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER_BA
+      + '?restype=container&comp=list&prefix=' + encodeURIComponent(slug + '_') + '&' + SAS_TOKEN_BA;
+    var r = await fetch(url);
+    if (!r.ok) return 1;
+    var xml = await r.text();
+    var doc = new DOMParser().parseFromString(xml, 'application/xml');
+    var nums = Array.from(doc.querySelectorAll('Name')).map(function(n){
+      var m = n.textContent.match(/_(\d+)-(?:before|after)/);
+      return m ? parseInt(m[1]) : 0;
+    });
+    return nums.length ? Math.max.apply(null, nums) + 1 : 1;
+  } catch(e) { return 1; }
+}
+
+async function uploadBAPair() {
+  var projectName = document.getElementById('baProjectName').value.trim();
+  if (!projectName) { setBaMsg('Enter a project name first.', '#c62828'); return; }
+  if (!baFiles.before || !baFiles.after) { setBaMsg('Pick both a before and an after photo.', '#c62828'); return; }
+
+  var slug = slugify(projectName);
+  setBaMsg('Checking existing pairs…', '#e65100');
+  var pairNum = await getNextBaPairNumber(slug);
+  var duration = document.getElementById('baDuration').value.trim();
+
+  var ext = function(file){ return file.name.split('.').pop().toLowerCase(); };
+  var uploads = [
+    { file: baFiles.before, blobName: slug + '_' + pairNum + '-before.' + ext(baFiles.before) },
+    { file: baFiles.after,  blobName: slug + '_' + pairNum + '-after.'  + ext(baFiles.after)  }
+  ];
+
+  setBaMsg('Uploading…', '#e65100');
+
+  try {
+    for (var i = 0; i < uploads.length; i++) {
+      var u = uploads[i];
+      var metadata = 'x-ms-meta-project=' + encodeURIComponent(projectName);
+      if (duration) metadata += ',x-ms-meta-duration=' + encodeURIComponent(duration);
+      var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER_BA + '/' + u.blobName + '?' + SAS_TOKEN_BA;
+      var r = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'x-ms-blob-type': 'BlockBlob',
+          'Content-Type': u.file.type || 'image/jpeg',
+          'x-ms-meta-project': projectName,
+          'x-ms-meta-duration': duration || ''
+        },
+        body: u.file
+      });
+      if (!r.ok && r.status !== 201) throw new Error('Upload failed: ' + r.status);
+    }
+    setBaMsg('✓ Pair ' + pairNum + ' uploaded for "' + projectName + '"!', '#2e7d32');
+    clearBAPair();
+    loadBAProjects();
+  } catch(e) {
+    setBaMsg('Error: ' + e.message, '#c62828');
+  }
+}
+
+async function loadBAProjects() {
+  var container = document.getElementById('baProjects');
+  container.innerHTML = '<div class="loading-msg">Loading…</div>';
+  try {
+    var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER_BA
+      + '?restype=container&comp=list&' + SAS_TOKEN_BA;
+    var r = await fetch(url);
+    if (!r.ok) { container.innerHTML = '<div class="loading-msg">No projects yet.</div>'; return; }
+    var xml = await r.text();
+    var doc = new DOMParser().parseFromString(xml, 'application/xml');
+    var blobs = Array.from(doc.querySelectorAll('Blob'))
+      .filter(function(b){ return /\.(jpe?g|png|webp)$/i.test(b.querySelector('Name').textContent); });
+
+    if (!blobs.length) { container.innerHTML = '<div class="loading-msg">No before & after photos yet.</div>'; return; }
+
+    // Group by project slug (everything before the first underscore+number)
+    var projects = {};
+    blobs.forEach(function(b){
+      var name = b.querySelector('Name').textContent;
+      var m = name.match(/^(.+?)_(\d+)-(before|after)\./i);
+      if (!m) return;
+      var slug = m[1], num = m[2], role = m[3];
+      if (!projects[slug]) projects[slug] = {};
+      if (!projects[slug][num]) projects[slug][num] = {};
+      projects[slug][num][role] = name;
+    });
+
+    container.innerHTML = '';
+    Object.keys(projects).sort().forEach(function(slug){
+      var label = slug.replace(/-/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+      var pairs = projects[slug];
+      var html = '<div class="ba-project-group"><div class="ba-project-name">' + label + '</div><div class="ba-pairs-row">';
+      Object.keys(pairs).sort(function(a,b){ return a-b; }).forEach(function(num){
+        ['before','after'].forEach(function(role){
+          var name = pairs[num][role];
+          if (!name) return;
+          var blobUrl = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER_BA + '/' + name + '?' + SAS_TOKEN_BA;
+          html += '<div class="ba-pair-thumb">'
+            + '<img src="' + blobUrl + '" loading="lazy">'
+            + '<span class="role-badge ' + role + '">' + role + ' #' + num + '</span>'
+            + '<button class="del-btn" onclick="deleteBABlob(\'' + name + '\')">✕</button>'
+            + '</div>';
+        });
+      });
+      html += '</div></div>';
+      container.innerHTML += html;
+    });
+  } catch(e) {
+    container.innerHTML = '<div class="loading-msg">Could not load projects.</div>';
+  }
+}
+
+function deleteBABlob(name) {
+  if (!confirm('Delete "' + name + '"?')) return;
+  var url = 'https://' + SA + '.blob.core.windows.net/' + CONTAINER_BA + '/' + name + '?' + SAS_TOKEN_BA;
+  fetch(url, { method: 'DELETE' }).then(function(){ loadBAProjects(); });
+}
+
+// ── Blog ─────────────────────────────────────────────────────────────────────
+var _blogPosts = [];
+var _editingPost = null;
+
+async function loadBlogPosts() {
+  var listEl = document.getElementById('blog-posts-list');
+  if (listEl) listEl.innerHTML = '<div class="loading-msg">Loading…</div>';
+  try {
+    var r = await fetch(BLOG_READ_BASE + '/posts.json?t=' + Date.now());
+    _blogPosts = r.ok ? await r.json() : [];
+  } catch(e) { _blogPosts = []; }
+  renderBlogList();
+}
+
+function renderBlogList() {
+  var listEl = document.getElementById('blog-posts-list');
+  var countEl = document.getElementById('blog-count');
+  if (!listEl) return;
+  var n = _blogPosts.length;
+  if (countEl) countEl.textContent = n + ' post' + (n !== 1 ? 's' : '');
+  if (!n) { listEl.innerHTML = '<div class="loading-msg">No posts yet — create your first one!</div>'; return; }
+  listEl.innerHTML = '';
+  var sorted = _blogPosts.slice().sort(function(a,b){ return (b.date||'') > (a.date||'') ? 1 : -1; });
+  sorted.forEach(function(post){
+    var div = document.createElement('div');
+    div.className = 'blog-post-item';
+    div.innerHTML = '<div class="blog-post-meta">'
+      + '<div class="blog-post-title">' + escHtml(post.title||'(untitled)') + '</div>'
+      + '<div class="blog-post-sub">' + escHtml(post.category||'') + (post.date ? ' · ' + post.date : '') + '</div>'
+      + '</div>'
+      + '<span class="blog-status ' + (post.status||'draft') + '">' + (post.status||'draft') + '</span>'
+      + '<button class="btn btn-outline" onclick="editPost(\'' + post.id + '\')" style="padding:7px 14px;font-size:.82rem;margin-left:8px">Edit</button>';
+    listEl.appendChild(div);
+  });
+}
+
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function openNewPost() {
+  _editingPost = null;
+  document.getElementById('blog-editing-id').value = '';
+  ['blog-title','blog-slug','blog-summary','blog-body','blog-image'].forEach(function(id){ document.getElementById(id).value = ''; });
+  document.getElementById('blog-date').value = new Date().toISOString().slice(0,10);
+  var sel = document.getElementById('blog-category');
+  if (sel && sel.options.length) sel.selectedIndex = 0;
+  document.getElementById('blog-delete-btn').style.display = 'none';
+  document.getElementById('blog-save-msg').textContent = '';
+  showBlogEditor();
+}
+
+function editPost(id) {
+  var post = _blogPosts.find(function(p){ return p.id === id; });
+  if (!post) return;
+  _editingPost = post;
+  document.getElementById('blog-editing-id').value = id;
+  document.getElementById('blog-title').value = post.title||'';
+  document.getElementById('blog-slug').value = post.slug||'';
+  document.getElementById('blog-date').value = post.date||'';
+  document.getElementById('blog-summary').value = post.summary||'';
+  document.getElementById('blog-body').value = post.body||'';
+  document.getElementById('blog-image').value = post.featuredImage||'';
+  var sel = document.getElementById('blog-category'); if (sel) sel.value = post.category||'';
+  document.getElementById('blog-delete-btn').style.display = '';
+  document.getElementById('blog-save-msg').textContent = '';
+  showBlogEditor();
+}
+
+function showBlogEditor() {
+  document.getElementById('blog-list-view').style.display = 'none';
+  document.getElementById('blog-editor-view').style.display = '';
+}
+function showBlogList() {
+  document.getElementById('blog-list-view').style.display = '';
+  document.getElementById('blog-editor-view').style.display = 'none';
+}
+
+function autoSlug() {
+  if (_editingPost) return;
+  var title = document.getElementById('blog-title').value;
+  document.getElementById('blog-slug').value = title.toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+}
+
+async function savePost(status) {
+  var title = document.getElementById('blog-title').value.trim();
+  if (!title) { setBlogMsg('Title is required.','#c62828'); return; }
+  var id = document.getElementById('blog-editing-id').value || ('post-' + Date.now());
+  var slug = document.getElementById('blog-slug').value.trim() || id;
+  var post = {
+    id: id, slug: slug, title: title,
+    category: document.getElementById('blog-category').value,
+    date: document.getElementById('blog-date').value,
+    summary: document.getElementById('blog-summary').value.trim(),
+    body: document.getElementById('blog-body').value,
+    featuredImage: document.getElementById('blog-image').value.trim(),
+    status: status
+  };
+  var idx = _blogPosts.findIndex(function(p){ return p.id === id; });
+  if (idx >= 0) _blogPosts[idx] = post; else _blogPosts.push(post);
+  setBlogMsg('Saving…','#e65100');
+  var ok = await writeBlogJson('posts.json', _blogPosts);
+  if (ok) {
+    setBlogMsg('✓ ' + (status==='published' ? 'Published!' : 'Saved as draft!'),'#2e7d32');
+    setTimeout(function(){ showBlogList(); renderBlogList(); }, 900);
+  } else { setBlogMsg('Save failed — check connection.','#c62828'); }
+}
+
+async function deleteCurrentPost() {
+  var id = document.getElementById('blog-editing-id').value;
+  if (!id || !confirm('Delete this post? Cannot be undone.')) return;
+  _blogPosts = _blogPosts.filter(function(p){ return p.id !== id; });
+  setBlogMsg('Deleting…','#e65100');
+  var ok = await writeBlogJson('posts.json', _blogPosts);
+  if (ok) { showBlogList(); renderBlogList(); }
+  else { setBlogMsg('Delete failed.','#c62828'); }
+}
+
+async function writeBlogJson(filename, data) {
+  try {
+    var url = BLOG_WRITE_URL + '/' + filename + '?' + SAS_TOKEN_BLOG;
+    var r = await fetch(url, {
+      method: 'PUT',
+      headers: { 'x-ms-blob-type': 'BlockBlob', 'Content-Type': 'application/json', 'x-ms-blob-cache-control': 'no-cache, must-revalidate' },
+      body: JSON.stringify(data, null, 2)
+    });
+    return r.ok || r.status === 201;
+  } catch(e) { return false; }
+}
+
+function setBlogMsg(text, color) {
+  var el = document.getElementById('blog-save-msg');
+  if (!el) return;
+  el.textContent = text; el.style.color = color || 'inherit';
+}
+
+// Load B&A projects when that tab is shown
+var _origShowTab = showTab;
+showTab = function(name, btn) {
+  _origShowTab(name, btn);
+  if (name === 'ba') loadBAProjects();
+  if (name === 'blog') loadBlogPosts();
+};
 </script>
 </body>
 </html>
