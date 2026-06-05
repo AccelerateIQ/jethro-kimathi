@@ -284,10 +284,16 @@ function showScreen(id) {
   else document.getElementById(id).classList.add('active');
 }
 
+// Pre-configured storage — no setup screen needed
+const _PRESET_URL = 'https://jethrokimathi.blob.core.windows.net/$web';
+const _PRESET_SAS = 'se=2028-06-05T14%3A02Z&sp=rwc&spr=https&sv=2022-11-02&ss=b&srt=o&sig=tNP1MuqCKJlJ%2BsO/cLYmDRZELB70tUfJ9aDcaVyIfHU%3D';
+
 async function init() {
   await ensureDefaultHash();
+  // Auto-configure storage on first load
+  if (!storageUrl) { localStorage.setItem('jk_storage_url', _PRESET_URL); storageUrl = _PRESET_URL; }
+  if (!storageSas) { localStorage.setItem('jk_storage_sas', _PRESET_SAS); storageSas = _PRESET_SAS; }
   if (!isAuthed) { showScreen('screen-login'); return; }
-  if (!storageUrl || !storageSas) { showScreen('screen-setup'); return; }
   startApp();
 }
 
