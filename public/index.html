@@ -329,6 +329,7 @@ h2.section-h2 {
 .gallery-item:hover img{transform:scale(1.06)}
 .gallery-item .gal-overlay{position:absolute;inset:0;background:rgba(6,10,7,.42);opacity:0;transition:.2s;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff}
 .gallery-item:hover .gal-overlay{opacity:1}
+.gallery-empty{color:var(--muted);font-size:.9rem;padding:28px 0}
 #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
 #lightbox.open{display:flex}
 #lightbox-img{max-width:100%;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.8)}
@@ -382,6 +383,7 @@ footer {
       <a href="#about">About</a>
       <a href="#ministry">Ministry</a>
       <a href="#agribusiness">Agribusiness</a>
+      <a href="#gallery">Gallery</a>
       <a href="#blog">Blog</a>
       <a href="#book" class="nav-cta">Book for Speaking</a>
     </div>
@@ -560,11 +562,13 @@ footer {
 </div>
 
 <!-- ── PHOTO GALLERY ───────────────────────────────────────────────────────── -->
-<div id="gallery" style="display:none">
+<div id="gallery">
 <div class="section">
   <div class="eyebrow">Gallery</div>
   <h2 class="section-h2">Moments &amp; Milestones</h2>
-  <div class="gallery-grid" id="gallery-grid"></div>
+  <div class="gallery-grid" id="gallery-grid">
+    <div class="gallery-empty">Photos coming soon.</div>
+  </div>
 </div>
 </div>
 
@@ -830,7 +834,6 @@ async function loadGallery() {
     if (!r.ok) return;
     _galUrls = await r.json();
     if (!Array.isArray(_galUrls) || !_galUrls.length) return;
-    document.getElementById('gallery').style.display = '';
     document.getElementById('gallery-grid').innerHTML = _galUrls.map((url, i) =>
       `<div class="gallery-item" onclick="openLb(${i})">
         <img src="${esc(url)}" alt="Gallery photo" loading="lazy">
